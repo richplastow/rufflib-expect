@@ -1,0 +1,23 @@
+{
+    "name": "rufflab-expect",
+    "version": "0.0.1",
+    "description": "A RuffLIB library for unit testing rough and sketchy JavaScript apps.",
+    "main": "docs/dist/rufflab-expect.es.js",
+    "type": "module",
+    "scripts": {
+        "build": "rollup -c",
+        "test": "node docs/run-nodejs-tests.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/richplastow/rufflib-expect.git"
+    },
+    "author": "rich@richplastow.com",
+    "license": "MIT",
+    "homepage": "https://richplastow.com/rufflib-expect",
+    "devDependencies": {
+        "@babel/preset-env": "^7.18.6",
+        "@rollup/plugin-babel": "^5.3.1",
+        "rollup-plugin-terser": "^7.0.2"
+    }
+}

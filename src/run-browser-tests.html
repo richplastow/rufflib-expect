@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height,
+      initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="data:;base64,iVBORwOKGO=" />
+    <title>RuffLIB Expect | Tests</title>
+    <style>
+        body{margin:0;color:#eee;font:10px/2 Verdana,Arial;text-align:center}
+        @media screen and (min-width:450px){body{font-size:15px}}
+        body{padding:9px;min-width:282px;background:#000}
+        b{color:#eee}
+        i{padding:2px 8px;color:#fff;background:#900}
+        h2,nav{position:relative;margin:0;white-space:nowrap}
+        pre,a{padding:4px 8px;border-radius:4px;text-decoration:none;background:#222}
+        pre{margin:9px;text-align:left}
+        body.fail,body.fail a{color:#fce}body.fail{background:#642c2c}
+        body.fail pre,body.fail a{background:#411}
+        body.pass,body.pass a{color:#cfe}body.pass{background:#2c642c}
+        body.pass pre,body.pass a{background:#141}
+    </style>
+</head>
+<body>
+    <h2>RuffLIB Expect | Tests</h2>
+    <pre id="log">Loading...</pre>
+
+    <script async src="shims/es-module-shims.js"></script>
+    <script type="importmap">{
+        "imports": {
+            "Expect": "./entry-point-main.js",
+            "expectTest": "./entry-point-for-tests.js"
+        }
+    }</script>
+
+    <script type="module">
+        import Expect from 'Expect';
+        import expectTest from 'expectTest';
+
+        const testSuite = new Expect('Expect Test Suite (Browser)');
+        const expect = testSuite.expect;
+        expectTest(expect, Expect);
+        document.querySelector('pre').innerHTML = testSuite.render('Plain');
+    </script>
+</body>
+</html>
