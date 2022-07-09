@@ -248,8 +248,11 @@ class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
         this.log = [];
-        this.status = 'pass'; // no tests run, meaning the test suite has passed
         this.suiteTitle = suiteTitle;
+
+        // No tests have run yet, so no failures, so technically the test suite
+        // status is currently ‘pass’.
+        this.status = 'pass';
     }
 }
 
