@@ -17,35 +17,31 @@
         body{margin:0;color:#eee;font:10px/2 Verdana,Arial;text-align:center}
         @media screen and (min-width:450px){body{font-size:15px}}
         body{padding:9px;min-width:282px;background:#000}
-        pre{line-height:1.8}
-        b{color:#eee}
-        i{font-style:normal}
-        body.pass i{color:#7fff7f}
-        u{padding:2px 8px;color:#fff;background:#900;text-decoration:none}
-        s{color:#9c8293;text-decoration:none}
-        h2,nav{position:relative;margin:0;white-space:nowrap}
-        pre,a{padding:4px 8px;border-radius:4px;text-decoration:none;background:#222}
-        pre{margin:9px;text-align:left}
-        body.fail,body.fail a{color:#fce}body.fail{background:#642c2c}
-        body.fail pre,body.fail a{background:#411}
-        body.pass,body.pass a{color:#cfe}body.pass{background:#2c642c}
-        body.pass pre,body.pass a{background:#141}
     </style>
 </head>
 <body>
     <h2>RuffLIB Expect | Tests</h2>
-    <pre id="log">Loading...</pre>
+    <div id="test-output">Loading...</div>
 
     <script src="dist/rufflib-expect-test.umd.js"></script>
     <script src="dist/rufflib-expect.umd.es5.min.js"></script>
     <script>!function(){
         var Expect = rufflib.expect.main;
         var expectTest = rufflib.expect.test;
-        var testSuite = new Expect('Expect Test Suite (Browser)');
+
+        // Generate the <STYLE> element.
+        var $css = document.createElement('style');
+        $css.innerHTML = Expect.generateCss('body', '#test-output');
+        document.head.appendChild($css);
+
+        // Run the test suite.
+        var testSuite = new Expect('Expect Test Suite (dist, browser)');
         var expect = testSuite.expect;
         expectTest(expect, Expect);
+
+        // Display the results.
         document.body.classList.add(testSuite.status);
-        document.querySelector('pre').innerHTML = testSuite.render('Html');
+        document.querySelector('#test-output').innerHTML = testSuite.render('Html');
     }()</script>
 
 </body>

@@ -5,8 +5,9 @@
 
 /* --------------------------------- Import --------------------------------- */
 
-import render from './methods/render.js';
+import generateCss from './methods/generate-css.js';
 import expect from './methods/expect.js';
+import render from './methods/render.js';
 
 
 /* ---------------------------------- Class --------------------------------- */
@@ -37,6 +38,7 @@ export default class Expect {
     }
 }
 
+Expect.generateCss = generateCss;
 Expect.prototype.render = render;
 
 
