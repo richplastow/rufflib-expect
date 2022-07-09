@@ -9,6 +9,7 @@ export default function expect(
     actually,  // the value to test (omitted if `section()` is called)
 ) {
     const log = this.log;
+    const fail = () => this.status = 'fail';
     return {
 
         // Logs a section-title.
@@ -22,23 +23,20 @@ export default function expect(
 
         // Tests that `actually` and `expected` are strictly equal.
         toBe(expected) {
-            if (actually === expected)
+            if (actually === expected) {
                 log.push({
                     kind: 'Passed',
                     testTitle,
                 });
-            else
+            } else {
+                fail();
                 log.push({
                     expected,
                     actually,
                     kind: 'Failed',
                     testTitle,
-                    // text: [
-                    //     testTitle,
-                    //     `  expected: ${expected}`,
-                    //     `  actually: ${actually}`
-                    // ],
                 });
+            }
         },
     }
 }

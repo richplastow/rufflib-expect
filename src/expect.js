@@ -32,6 +32,7 @@ export default class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
         this.log = [];
+        this.status = 'pass'; // no tests run, meaning the test suite has passed
         this.suiteTitle = suiteTitle;
     }
 }

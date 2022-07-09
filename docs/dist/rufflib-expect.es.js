@@ -3,6 +3,7 @@
 
 /* -------------------------------- Constants ------------------------------- */
 
+// Colours and styles for for ANSI text, eg for a Terminal.
 const ANSI_BOLD = '\u001b[1m';
 const ANSI_DLOB = '\u001b[0m';
 const ANSI_DIM  = '\u001b[2m';
@@ -11,6 +12,16 @@ const ANSI_PASS = '\u001b[32m√ ';
 const ANSI_SSAP = '\u001b[0m';
 const ANSI_FAIL = '\u001b[31mX ';
 const ANSI_LIAF = '\u001b[0m';
+
+// HTML elements (tags), eg for a web browser.
+const HTML_BOLD = '<b>';
+const HTML_DLOB = '</b>';
+const HTML_DIM  = '<s>';
+const HTML_MID  = '</s>';
+const HTML_PASS = '<i>√ ';
+const HTML_SSAP = '</i>';
+const HTML_FAIL = '<u>X ';
+const HTML_LIAF = '</u>';
 
 
 /* --------------------------------- Method --------------------------------- */
@@ -58,6 +69,26 @@ function _renderAnsi(log) {
     ;
 }
 
+// Renders the log for HTML output, eg to a web browser.
+function _renderHtml(log) {
+    return log
+        .map(item => {
+            switch (item.kind) {
+                case 'Failed':
+                    return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
+                         + `  ${HTML_DIM}expected:${HTML_MID} ${item.expected}\n`
+                         + `  ${HTML_DIM}actually:${HTML_MID} ${item.actually}`;
+                case 'Passed':
+                    return `${HTML_PASS}Passed${HTML_SSAP} ${item.testTitle}`;
+                case 'SectionTitle':
+                    return `${HTML_BOLD}${item.sectionTitle}:${HTML_DLOB}`;
+                default: throw Error(`Expect.render(): unexpected item.kind`);
+            }
+        })
+        .join('\n')
+    ;
+}
+
 // Renders the log for plain text output, eg to a '.txt' file.
 function _renderPlain(log) {
     return log
@@ -89,6 +120,7 @@ function expect(
     actually,  // the value to test (omitted if `section()` is called)
 ) {
     const log = this.log;
+    const fail = () => this.status = 'fail';
     return {
 
         // Logs a section-title.
@@ -102,23 +134,20 @@ function expect(
 
         // Tests that `actually` and `expected` are strictly equal.
         toBe(expected) {
-            if (actually === expected)
+            if (actually === expected) {
                 log.push({
                     kind: 'Passed',
                     testTitle,
                 });
-            else
+            } else {
+                fail();
                 log.push({
                     expected,
                     actually,
                     kind: 'Failed',
                     testTitle,
-                    // text: [
-                    //     testTitle,
-                    //     `  expected: ${expected}`,
-                    //     `  actually: ${actually}`
-                    // ],
                 });
+            }
         },
     }
 }
@@ -149,6 +178,7 @@ class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
         this.log = [];
+        this.status = 'pass'; // no tests run, meaning the test suite has passed
         this.suiteTitle = suiteTitle;
     }
 }
