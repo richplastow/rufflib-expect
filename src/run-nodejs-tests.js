@@ -1,5 +1,5 @@
 // rufflib-expect/src/run-nodejs-tests.js
-
+console.log('rufflib-expect/src/run-nodejs-tests.js');
 /* -------------------------------- Imports --------------------------------- */
 
 import Expect from './entry-point-main.js';

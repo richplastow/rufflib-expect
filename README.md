@@ -11,14 +11,12 @@ __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 ## Dev, Test and Build
 
 Run the test suite in ‘src/’, while working on this library:  
-`node src/run-nodejs-tests.js # test src/ using NodeJS`
-`static-server src & open http://localhost:9080/run-browser-tests.html && fg # test src/ using a browser`  
+`npm test --src`  
+`npm start --src --open --test`  
 
 Build the minified and unminified bundles, using settings in rollup.config.js:  
-`rollup -c`  
-or  
 `npm run build`
 
 Run the test suite in ‘docs/’, after a build:  
-`npm test # test docs/ using NodeJS`  
-`static-server docs & open http://localhost:9080/run-browser-tests.html && fg # test docs/ using a browser`  
+`npm test`  
+`npm start --open --test`  

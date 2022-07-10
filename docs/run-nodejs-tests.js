@@ -5,7 +5,6 @@
 import Expect from './dist/rufflib-expect.es.js';
 import expectTest from './dist/rufflib-expect-test.es.js';
 
-
 /* --------------------------------- Tests ---------------------------------- */
 
 // Run the test suite.

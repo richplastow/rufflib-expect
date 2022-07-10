@@ -6,7 +6,9 @@
     "type": "module",
     "scripts": {
         "build": "rollup -c",
-        "test": "node docs/run-nodejs-tests.js"
+        "test:docs": "node docs/run-nodejs-tests.js # test docs/ using NodeJS",
+        "test:src": "node src/run-nodejs-tests.js # test src/ using NodeJS",
+        "test": "[ -z $npm_config_src ]&&D=docs||D=src;npm run test:$D"
     },
     "repository": {
         "type": "git",
