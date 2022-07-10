@@ -74,7 +74,7 @@ function _renderAnsi(log, failTally, passTally, sections, suiteTitle, verbose) {
             }
         })
         .join('')
-        + (verbose ? '\n\n' + summary : '\n')
+        + (verbose ? '\n\n' + summary : '')
     ;
 }
 
