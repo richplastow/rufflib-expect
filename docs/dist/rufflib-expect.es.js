@@ -79,7 +79,18 @@ function expect(
     actually,  // the value to test (omitted if `section()` is called)
 ) {
     const log = this.log;
-    const fail = () => this.status = 'fail';
+    const sections = this.sections;
+    const addSection = () => {
+        return sections.push({ failTally: 0 }) - 1; // return its index
+    };
+    const fail = () => {
+        sections[sections.length-1].failTally++;
+        this.failTally++;
+        this.status = 'fail';
+    };
+    const pass = () => {
+        this.passTally++;
+    };
     return {
 
         // Logs a section-title.
@@ -87,13 +98,16 @@ function expect(
         section(sectionTitle='Untitled Section') {
             log.push({
                 kind: 'SectionTitle',
+                sectionIndex: addSection(),
                 sectionTitle,
             });
         },
 
         // Tests that `actually` and `expected` are strictly equal.
         toBe(expected) {
+            if (! sections.length) this.section(); // there must be a section
             if (actually === expected) {
+                pass();
                 log.push({
                     kind: 'Passed',
                     testTitle,
@@ -139,13 +153,15 @@ const HTML_LIAF = '</u>';
 
 /* --------------------------------- Method --------------------------------- */
 
-// Public method which transforms the log to a string, in various formats.
+// Public method which transforms test results to a string, in various formats.
 function render(
-    format='Plain', // how the log should be returned, `Ansi|Html|Json|Plain|Raw`
+    format='Plain', // how output should be formatted, `Ansi|Html|Json|Plain|Raw`
+    verbose=false, // whether to show all passing test results
 ) {
+    const { log, failTally, passTally, sections, suiteTitle } = this;
     switch (format) {
         case 'Ansi':
-            return _renderAnsi(this.log);
+            return _renderAnsi(log, failTally, passTally, sections, suiteTitle, verbose);
         case 'Html':
             return _renderHtml(this.log);
         case 'Json':
@@ -162,27 +178,51 @@ function render(
 
 /* ----------------------------- Private Helpers ---------------------------- */
 
-// Renders the log for ANSI text output, eg to a Terminal.
-function _renderAnsi(log) {
-    return log
-        .map(item => {
+// Renders test results for ANSI text output, eg to a Terminal.
+function _renderAnsi(log, failTally, passTally, sections, suiteTitle, verbose) {
+    const summary = _renderSummaryAnsi(failTally, passTally, suiteTitle);
+    return summary
+        + log.map(item => {
             switch (item.kind) {
                 case 'Failed':
                     return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
                          + `  ${ANSI_DIM}expected:${ANSI_MID} ${item.expected}\n`
-                         + `  ${ANSI_DIM}actually:${ANSI_MID} ${item.actually}`;
+                         + `  ${ANSI_DIM}actually:${ANSI_MID} ${item.actually}\n`;
                 case 'Passed':
-                    return `${ANSI_PASS}Passed${ANSI_SSAP} ${item.testTitle}`;
+                    return verbose
+                        ? `${ANSI_PASS}Passed${ANSI_SSAP} ${item.testTitle}\n`
+                        : '';
                 case 'SectionTitle':
-                    return `${ANSI_BOLD}${item.sectionTitle}:${ANSI_DLOB}`;
+                    return verbose || sections[item.sectionIndex].failTally
+                        ? `\n${ANSI_BOLD}${item.sectionTitle}:${ANSI_DLOB}\n`
+                            + '-'.repeat(item.sectionTitle.length+1) + '\n'
+                        : '';
                 default: throw Error(`Expect.render(): unexpected item.kind`);
             }
         })
-        .join('\n')
+        .join('')
+        + (verbose ? '\n\n' + summary : '\n')
     ;
 }
 
-// Renders the log for HTML output, eg to a web browser.
+// Renders the test results summary for ANSI text output, eg to a Terminal.
+function _renderSummaryAnsi(failTally, passTally, suiteTitle) {
+    return '-'.repeat(79)
+        + '\n'
+        + `${ANSI_BOLD}${suiteTitle}${ANSI_DLOB}\n`
+        + '='.repeat(suiteTitle.length)
+        + '\n'
+        + (failTally
+            ? `${ANSI_FAIL}Failed${ANSI_LIAF} ${failTally} of ${failTally + passTally}`
+            : `${ANSI_PASS}Passed${ANSI_SSAP} ${passTally} test${passTally === 1 ? '' : 's'}`
+        )
+        + '\n'
+        + '-'.repeat(79)
+        + '\n'
+    ;
+}
+
+// Renders test results for HTML output, eg to a web browser.
 function _renderHtml(log) {
     return log
         .map(item => {
@@ -202,7 +242,7 @@ function _renderHtml(log) {
     ;
 }
 
-// Renders the log for plain text output, eg to a '.txt' file.
+// Renders test results for plain text output, eg to a '.txt' file.
 function _renderPlain(log) {
     return log
         .map(item => {
@@ -248,10 +288,13 @@ class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
         this.log = [];
+        this.sections = [];
         this.suiteTitle = suiteTitle;
 
-        // No tests have run yet, so no failures, so technically the test suite
-        // status is currently ‘pass’.
+        // No tests have run yet, so no failures and no passes.
+        // So technically, the test suite status is currently ‘pass’.
+        this.failTally = 0;
+        this.passTally = 0;
         this.status = 'pass';
     }
 }

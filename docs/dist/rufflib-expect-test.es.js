@@ -5,7 +5,7 @@
 
 // Runs basic Expect tests on itself.
 function test(expect, Expect) {
-    expect().section('Expect basics');
+    // expect().section('Expect basics');
     expect(`typeof Expect // in JavaScript, a class is type 'function'`,
             typeof Expect).toBe('function');
     expect(`typeof new Expect()`,

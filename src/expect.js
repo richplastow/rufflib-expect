@@ -33,10 +33,13 @@ export default class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
         this.log = [];
+        this.sections = [];
         this.suiteTitle = suiteTitle;
 
-        // No tests have run yet, so no failures, so technically the test suite
-        // status is currently ‘pass’.
+        // No tests have run yet, so no failures and no passes.
+        // So technically, the test suite status is currently ‘pass’.
+        this.failTally = 0;
+        this.passTally = 0;
         this.status = 'pass';
     }
 }
@@ -49,7 +52,7 @@ Expect.prototype.render = render;
 
 // Runs basic Expect tests on itself.
 export function test(expect, Expect) {
-    expect().section('Expect basics');
+    // expect().section('Expect basics');
     expect(`typeof Expect // in JavaScript, a class is type 'function'`,
             typeof Expect).toBe('function');
     expect(`typeof new Expect()`,
