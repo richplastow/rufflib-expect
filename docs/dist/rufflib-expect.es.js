@@ -1,3 +1,11 @@
+/**
+ * rufflab-expect 0.0.1
+ * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
+ * https://richplastow.com/rufflib-expect
+ * @license MIT
+ */
+
+
 // rufflib-expect/src/methods/generate-css.js
 
 
@@ -440,6 +448,13 @@ function _renderRaw(log) { }
 
 // rufflib-expect/src/expect.js
 
+// Assembles the `Expect` class.
+
+
+/* --------------------------------- Import --------------------------------- */
+
+const VERSION = '0.0.1';
+
 
 /* ---------------------------------- Class --------------------------------- */
 
@@ -475,6 +490,7 @@ class Expect {
     }
 }
 
+Expect.VERSION = VERSION;
 Expect.generateCss = generateCss;
 Expect.prototype.render = render;
 

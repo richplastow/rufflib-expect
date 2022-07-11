@@ -1,7 +1,16 @@
 // Configuration, used by `rollup -c` during `npm run build`.
 
+import { homepage, description, license, name, version }
+    from './package.json';
 import { babel } from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+
+const banner = `/**\n`
+    + ` * ${name} ${version}\n` // will be ' * Unit tests for ...' in test files
+    + ` * ${description}\n`
+    + ` * ${homepage}\n`
+    + ` * @license ${license}\n`
+    + ` */\n\n`;
 
 export default [
 
@@ -9,6 +18,7 @@ export default [
     {
         input: 'src/entry-point-main.js',
         output: {
+            banner,
             file: 'docs/dist/rufflib-expect.es.js',
             format: 'es', // eg for `node docs/run-nodejs-tests.js`
         }
@@ -32,6 +42,7 @@ export default [
     {
         input: 'src/entry-point-for-tests.js',
         output: {
+            banner: banner.replace(' * ', ' * Unit tests for '),
             file: 'docs/dist/rufflib-expect-test.es.js',
             format: 'es', // eg for `node docs/run-nodejs-tests.js`
         }

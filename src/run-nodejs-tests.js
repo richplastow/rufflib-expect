@@ -14,6 +14,10 @@ const sectionMustContain = process.env.npm_config_section || '';
 
 /* --------------------------------- Tests ---------------------------------- */
 
+// Ensure that Expect.VERSION matches the current package.json version.
+if (Expect.VERSION !== process.env.npm_package_version) throw Error(
+    `Expect.VERSION '${Expect.VERSION}' !== package.json version`);
+
 // Run the test suite.
 const testSuite = new Expect('Expect Test Suite (src, NodeJS)');
 expectTest(testSuite.expect, Expect);

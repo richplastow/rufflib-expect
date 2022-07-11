@@ -14,6 +14,12 @@
     }, _typeof(obj);
   }
 
+  /**
+   * Unit tests for rufflab-expect 0.0.1
+   * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
+   * https://richplastow.com/rufflib-expect
+   * @license MIT
+   */
   // rufflib-expect/src/methods/expect.js
 
   /* ---------------------------------- Tests --------------------------------- */
@@ -61,14 +67,19 @@
       status: 'fail'
     }); // @TODO remaining methods
   } // rufflib-expect/src/expect.js
+  // Assembles the `Expect` class.
 
+  /* --------------------------------- Import --------------------------------- */
+
+
+  var VERSION = '0.0.1';
   /* ---------------------------------- Tests --------------------------------- */
   // Runs basic Expect tests on itself.
-
 
   function test(expect, Expect) {
     expect().section('Expect basics');
     expect("typeof Expect // in JavaScript, a class is type 'function'", _typeof(Expect)).toBe('function');
+    expect("Expect.VERSION", Expect.VERSION).toBe(VERSION);
     expect("typeof new Expect()", _typeof(new Expect())).toBe('object');
     expect("new Expect()", new Expect()).toHave({
       failTally: 0,

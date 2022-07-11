@@ -5,6 +5,8 @@
 
 /* --------------------------------- Import --------------------------------- */
 
+const VERSION = '0.0.1';
+
 import generateCss from './methods/generate-css.js';
 import expect from './methods/expect.js';
 import render from './methods/render.js';
@@ -44,6 +46,7 @@ export default class Expect {
     }
 }
 
+Expect.VERSION = VERSION;
 Expect.generateCss = generateCss;
 Expect.prototype.render = render;
 
@@ -55,6 +58,8 @@ export function test(expect, Expect) {
     expect().section('Expect basics');
     expect(`typeof Expect // in JavaScript, a class is type 'function'`,
             typeof Expect).toBe('function');
+    expect(`Expect.VERSION`,
+            Expect.VERSION).toBe(VERSION);
     expect(`typeof new Expect()`,
             typeof new Expect()).toBe('object');
     expect(`new Expect()`,

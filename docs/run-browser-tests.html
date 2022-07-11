@@ -36,8 +36,7 @@
 
         // Run the test suite.
         var testSuite = new Expect('Expect Test Suite (dist, browser)');
-        var expect = testSuite.expect;
-        expectTest(expect, Expect);
+        expectTest(testSuite.expect, Expect);
 
         // Display the results.
         document.body.classList.add(testSuite.status);
