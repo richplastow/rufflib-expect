@@ -54,10 +54,13 @@ export default function generateCss(
         `${is}{background:#222;color:#eee}`, // before the tests complete
         `${cs}.fail ${is}{background:#411;color:#fce}`,
         `${cs}.pass ${is}{background:#141;color:#cfe}`,
+        `${cs}.fail hr{border-color:#642c2c}`,
+        `${cs}.pass hr{border-color:#2c642c}`,
     );
 
     // ...and the test result content.
     css.push(
+        `${is} h2{margin:0}`,
         `${is} b{color:#eee}`,
         `${is} i{font-style:normal}`,
         `${cs}.pass i{color:#7fff7f}`,

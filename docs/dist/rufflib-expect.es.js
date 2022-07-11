@@ -54,10 +54,13 @@ function generateCss(
         `${is}{background:#222;color:#eee}`, // before the tests complete
         `${cs}.fail ${is}{background:#411;color:#fce}`,
         `${cs}.pass ${is}{background:#141;color:#cfe}`,
+        `${cs}.fail hr{border-color:#642c2c}`,
+        `${cs}.pass hr{border-color:#2c642c}`,
     );
 
     // ...and the test result content.
     css.push(
+        `${is} h2{margin:0}`,
         `${is} b{color:#eee}`,
         `${is} i{font-style:normal}`,
         `${cs}.pass i{color:#7fff7f}`,
@@ -80,16 +83,18 @@ function expect(
 ) {
     const log = this.log;
     const sections = this.sections;
-    const addSection = () => {
-        return sections.push({ failTally: 0 }) - 1; // return its index
+    const addSection = (sectionTitle) => {
+        return sections.push({ failTally: 0, sectionTitle }) - 1; // return its index
     };
     const fail = () => {
         sections[sections.length-1].failTally++;
         this.failTally++;
         this.status = 'fail';
+        return sections.length - 1;
     };
     const pass = () => {
         this.passTally++;
+        return sections.length - 1;
     };
     return {
 
@@ -98,7 +103,7 @@ function expect(
         section(sectionTitle='Untitled Section') {
             log.push({
                 kind: 'SectionTitle',
-                sectionIndex: addSection(),
+                sectionIndex: addSection(sectionTitle),
                 sectionTitle,
             });
         },
@@ -107,17 +112,112 @@ function expect(
         toBe(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually === expected) {
-                pass();
                 log.push({
                     kind: 'Passed',
+                    sectionIndex: pass(),
                     testTitle,
                 });
             } else {
-                fail();
                 log.push({
                     expected,
                     actually,
                     kind: 'Failed',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+        },
+
+        // Tests that `actually` contains all of the keys and values in `expected`.
+        toHave(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            if (actually.error) {
+                return log.push({
+                    expected,
+                    actually,
+                    kind: 'Error',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+            for (let key in expected) {
+                const aJson = JSON.stringify(actually[key]);
+                const eJson = JSON.stringify(expected[key]);
+                if (aJson !== eJson) {
+                    return log.push({
+                        expected: eJson,
+                        actually: aJson,
+                        kind: 'Failed',
+                        sectionIndex: fail(),
+                        testTitle: `${testTitle}.${key}`,
+                    });
+                }
+            }
+            log.push({
+                kind: 'Passed',
+                sectionIndex: pass(),
+                testTitle,
+            });
+        },
+
+        // Tests that `actually` is an object with an expected `error` property.
+        toError(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            if (actually?.error === expected) {
+                log.push({
+                    kind: 'Passed',
+                    sectionIndex: pass(),
+                    testTitle,
+                });
+            } else {
+                log.push({
+                    expected,
+                    actually,
+                    kind: 'Failed',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+        },
+
+        // Tests that `actually` and `expected` are identical when stringified to JSON.
+        toJson(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            const aJson = JSON.stringify(actually);
+            const eJson = JSON.stringify(expected);
+            if (aJson === eJson) {
+                log.push({
+                    kind: 'Passed',
+                    sectionIndex: pass(),
+                    testTitle,
+                });
+            } else {
+                log.push({
+                    expected,
+                    actually,
+                    kind: 'Failed',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+        },
+
+        // Tests that `actually` passes the test defined by `expected`.
+        // Typically used for regular expression tests.
+        toMatch(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            if (expected.test(actually)) {
+                log.push({
+                    kind: 'Passed',
+                    sectionIndex: pass(),
+                    testTitle,
+                });
+            } else {
+                log.push({
+                    expected,
+                    actually,
+                    kind: 'Failed',
+                    sectionIndex: fail(),
                     testTitle,
                 });
             }
@@ -141,6 +241,8 @@ const ANSI_FAIL = '\u001b[31mX ';
 const ANSI_LIAF = '\u001b[0m';
 
 // HTML elements (tags), eg for a web browser.
+const HTML_HEADING = '<h2>';
+const HTML_GNIDAEH = '</h2>';
 const HTML_BOLD = '<b>';
 const HTML_DLOB = '</b>';
 const HTML_DIM  = '<s>';
@@ -156,48 +258,56 @@ const HTML_LIAF = '</u>';
 // Public method which transforms test results to a string, in various formats.
 function render(
     format='Plain', // how output should be formatted, `Ansi|Html|Json|Plain|Raw`
-    verbose=false, // whether to show all passing test results
+    sectionMustContain='', // only show sections which contain this string
+    verbose=false, // if true, show passing sections and tests
 ) {
     const { log, failTally, passTally, sections, suiteTitle } = this;
-    switch (format) {
-        case 'Ansi':
-            return _renderAnsi(log, failTally, passTally, sections, suiteTitle, verbose);
-        case 'Html':
-            return _renderHtml(this.log);
-        case 'Json':
-            return _renderJson(this.log);
-        case 'Plain':
-            return _renderPlain(this.log);
-        case 'Raw':
-            return _renderRaw(this.log);
-        default: throw Error(
-            `Expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
-    }
+    const renderer = ({
+        Ansi: _renderAnsi,
+        Html: _renderHtml,
+        Json: _renderJson,
+        Plain: _renderPlain,
+        Raw: _renderRaw,
+    })[format];
+    if (! renderer) throw Error(
+        `Expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
+    return renderer(log, failTally, passTally, sections, suiteTitle,
+        sectionMustContain.toLowerCase(), verbose);
 }
 
 
 /* ----------------------------- Private Helpers ---------------------------- */
 
 // Renders test results for ANSI text output, eg to a Terminal.
-function _renderAnsi(log, failTally, passTally, sections, suiteTitle, verbose) {
+function _renderAnsi(log, failTally, passTally, sections, suiteTitle, smcLc, verbose) {
     const summary = _renderSummaryAnsi(failTally, passTally, suiteTitle);
     return summary
         + log.map(item => {
-            switch (item.kind) {
-                case 'Failed':
-                    return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
-                         + `  ${ANSI_DIM}expected:${ANSI_MID} ${item.expected}\n`
-                         + `  ${ANSI_DIM}actually:${ANSI_MID} ${item.actually}\n`;
-                case 'Passed':
-                    return verbose
-                        ? `${ANSI_PASS}Passed${ANSI_SSAP} ${item.testTitle}\n`
-                        : '';
-                case 'SectionTitle':
-                    return verbose || sections[item.sectionIndex].failTally
-                        ? `\n${ANSI_BOLD}${item.sectionTitle}:${ANSI_DLOB}\n`
-                            + '-'.repeat(item.sectionTitle.length+1) + '\n'
-                        : '';
-                default: throw Error(`Expect.render(): unexpected item.kind`);
+            const sectionTitle = item.sectionTitle
+                ? item.sectionTitle
+                : sections[item.sectionIndex].sectionTitle
+            ;
+            if (sectionTitle.toLowerCase().includes(smcLc)) {
+                switch (item.kind) {
+                    case 'Error':
+                        return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
+                            + `  ${ANSI_DIM}actually is an error:${ANSI_MID}\n`
+                            + `  ${item.actually.error}\n`;
+                    case 'Failed':
+                        return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
+                            + `  ${ANSI_DIM}expected:${ANSI_MID} ${item.expected}\n`
+                            + `  ${ANSI_DIM}actually:${ANSI_MID} ${item.actually}\n`;
+                    case 'Passed':
+                        return verbose
+                            ? `${ANSI_PASS}Passed${ANSI_SSAP} ${item.testTitle}\n`
+                            : '';
+                    case 'SectionTitle':
+                        return verbose || item.failTally
+                            ? `\n${ANSI_BOLD}${item.sectionTitle}:${ANSI_DLOB}\n`
+                                + '-'.repeat(item.sectionTitle.length+1) + '\n'
+                            : '';
+                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                }
             }
         })
         .join('')
@@ -223,44 +333,110 @@ function _renderSummaryAnsi(failTally, passTally, suiteTitle) {
 }
 
 // Renders test results for HTML output, eg to a web browser.
-function _renderHtml(log) {
-    return log
-        .map(item => {
-            switch (item.kind) {
-                case 'Failed':
-                    return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
-                         + `  ${HTML_DIM}expected:${HTML_MID} ${item.expected}\n`
-                         + `  ${HTML_DIM}actually:${HTML_MID} ${item.actually}`;
-                case 'Passed':
-                    return `${HTML_PASS}Passed${HTML_SSAP} ${item.testTitle}`;
-                case 'SectionTitle':
-                    return `${HTML_BOLD}${item.sectionTitle}:${HTML_DLOB}`;
-                default: throw Error(`Expect.render(): unexpected item.kind`);
+function _renderHtml(log, failTally, passTally, sections, suiteTitle, smcLc, verbose) {
+    const summary = _renderSummaryHtml(failTally, passTally, suiteTitle);
+    return summary
+        + log.map(item => {
+            const sectionTitle = item.sectionTitle
+                ? item.sectionTitle
+                : sections[item.sectionIndex].sectionTitle
+            ;
+            if (sectionTitle.toLowerCase().includes(smcLc)) {
+                switch (item.kind) {
+                    case 'Error':
+                        return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
+                            + `  ${HTML_DIM}actually is an error:${HTML_MID}\n`
+                            + `  ${item.actually.error}`;
+                    case 'Failed':
+                        return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
+                            + `  ${HTML_DIM}expected:${HTML_MID} ${item.expected}\n`
+                            + `  ${HTML_DIM}actually:${HTML_MID} ${item.actually}\n`;
+                    case 'Passed':
+                        return verbose
+                            ? `${HTML_PASS}Passed${HTML_SSAP} ${item.testTitle}\n`
+                            : '';
+                    case 'SectionTitle':
+                        return verbose || item.failTally
+                            ? `\n${HTML_BOLD}${item.sectionTitle}:${HTML_DLOB}\n`
+                            : '';
+                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                }
             }
         })
-        .join('\n')
+        .join('')
+        + (verbose ? '\n\n' + summary : '')
+    ;
+}
+
+// Renders the test results summary for HTML output, eg to a web browser.
+function _renderSummaryHtml(failTally, passTally, suiteTitle) {
+    return '<hr>'
+        + `${HTML_HEADING}${suiteTitle}${HTML_GNIDAEH}\n`
+        + (failTally
+            ? `${HTML_FAIL}Failed${HTML_LIAF} ${failTally} of ${failTally + passTally}`
+            : `${HTML_PASS}Passed${HTML_SSAP} ${passTally} test${passTally === 1 ? '' : 's'}`
+        )
+        + '\n<hr>\n'
     ;
 }
 
 // Renders test results for plain text output, eg to a '.txt' file.
-function _renderPlain(log) {
-    return log
-        .map(item => {
-            switch (item.kind) {
-                case 'Failed':
-                    return `Failed ${item.testTitle}:\n`
-                         + `  expected: ${item.expected}\n`
-                         + `  actually: ${item.actually}`;
-                case 'Passed':
-                    return `Passed ${item.testTitle}`;
-                case 'SectionTitle':
-                    return item.sectionTitle;
-                default: throw Error(`Expect.render(): unexpected item.kind`);
+function _renderPlain(log, failTally, passTally, sections, suiteTitle, smcLc, verbose) {
+    const summary = _renderSummaryPlain(failTally, passTally, suiteTitle);
+    return summary
+        + log.map(item => {
+            const sectionTitle = item.sectionTitle
+                ? item.sectionTitle
+                : sections[item.sectionIndex].sectionTitle
+            ;
+            if (sectionTitle.toLowerCase().includes(smcLc)) {
+                switch (item.kind) {
+                    case 'Error':
+                        return `Failed ${item.testTitle}:\n`
+                            + `  actually is an error:\n`
+                            + `  ${item.actually.error}\n`;
+                    case 'Failed':
+                        return `Failed ${item.testTitle}:\n`
+                            + `  expected: ${item.expected}\n`
+                            + `  actually: ${item.actually}\n`;
+                    case 'Passed':
+                        return verbose
+                            ? `Passed ${item.testTitle}\n`
+                            : '';
+                    case 'SectionTitle':
+                        return verbose || sections[item.sectionIndex].failTally
+                            ? `\n${item.sectionTitle}:\n`
+                                + '-'.repeat(item.sectionTitle.length+1) + '\n'
+                            : '';
+                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                }
             }
         })
-        .join('\n')
+        .join('')
+        + (verbose ? '\n\n' + summary : '')
     ;
 }
+
+// Renders the test results summary for ANSI text output, eg to a Terminal.
+function _renderSummaryPlain(failTally, passTally, suiteTitle) {
+    return '-'.repeat(79)
+        + '\n'
+        + `${suiteTitle}\n`
+        + '='.repeat(suiteTitle.length)
+        + '\n'
+        + (failTally
+            ? `Failed ${failTally} of ${failTally + passTally}`
+            : `Passed ${passTally} test${passTally === 1 ? '' : 's'}`
+        )
+        + '\n'
+        + '-'.repeat(79)
+        + '\n'
+    ;
+}
+
+// @TODO
+function _renderJson(log) { }
+function _renderRaw(log) { }
 
 // rufflib-expect/src/expect.js
 

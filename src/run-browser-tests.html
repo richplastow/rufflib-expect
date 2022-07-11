@@ -41,7 +41,8 @@
 
         // Display the results.
         document.body.classList.add(testSuite.status);
-        document.querySelector('#test-output').innerHTML = testSuite.render('Html');
+        document.querySelector('#test-output').innerHTML =
+            testSuite.render('Html', '', true);
 
     </script>
 </body>
