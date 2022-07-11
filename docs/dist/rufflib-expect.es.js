@@ -1,5 +1,5 @@
 /**
- * rufflab-expect 0.0.1
+ * rufflab-expect 1.0.0
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -453,7 +453,7 @@ function _renderRaw(log) { }
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '0.0.1';
+const VERSION = '1.0.0';
 
 
 /* ---------------------------------- Class --------------------------------- */
