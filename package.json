@@ -10,11 +10,19 @@
         "test:src": "node src/run-nodejs-tests.js # test src/ using NodeJS",
         "test": "[ -z $npm_config_src ]&&D=docs||D=src;npm run test:$D"
     },
+    "keywords": [
+        "RuffLIB",
+        "vanilla",
+        "javascript",
+        "unit-test",
+        "testing",
+        "test-framework"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/richplastow/rufflib-expect.git"
     },
-    "author": "rich@richplastow.com",
+    "author": "Rich Plastow <rich@richplastow.com> (https://richplastow.com)",
     "license": "MIT",
     "homepage": "https://richplastow.com/rufflib-expect",
     "devDependencies": {
