@@ -1,5 +1,5 @@
 /**
- * rufflib-expect 1.0.0
+ * rufflib-expect 1.0.1
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -453,7 +453,7 @@ function _renderRaw(log) { }
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 
 /* ---------------------------------- Class --------------------------------- */
@@ -461,20 +461,24 @@ const VERSION = '1.0.0';
 // A RuffLIB library for unit testing rough and sketchy JavaScript apps.
 //
 // Typical usage:
+//
+//     import Expect from 'rufflib-expect';
+//
 //     const testSuite = new Expect('Mathsy Test Suite');
 //     const expect = testSuite.expect;
-//     expect.section('Check that factorialise() works as expected');
 //
+//     expect().section('Check that factorialise() works');
 //     expect(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
 //             factorialise(5)).toBe(120);
-//     testSuite.render();
+//
+//     console.log(testSuite.render('Ansi'));
 //
 //     function factorialise(n) {
 //         if (n === 0 || n === 1) return 1;
 //         for (let i=n-1; i>0; i--) n *= i;
 //         return n;
 //     }
-//     
+//
 class Expect {
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);

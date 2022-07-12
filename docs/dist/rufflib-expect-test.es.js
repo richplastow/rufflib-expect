@@ -1,5 +1,5 @@
 /**
- * Unit tests for rufflib-expect 1.0.0
+ * Unit tests for rufflib-expect 1.0.1
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -59,7 +59,7 @@ function test$1(expect, Expect) {
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 
 /* ---------------------------------- Tests --------------------------------- */

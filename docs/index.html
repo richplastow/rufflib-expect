@@ -25,11 +25,17 @@
         .btn{padding:4px 9px;background:#fff}
         .btn{border-right:8px solid #f00;border-left:8px solid #0ff}
         img{width:256px;height:256px}
+        section{margin:40px 0}
+        section h3{margin:9px 0;padding:7px;color:#d3af86;font-family:Verdana,Arial}
+        pre{width:300px;margin:0 auto;text-align:left}
+        code{font-size:9px;}
+        @media screen and (min-width:450px){
+            section h4,pre{width:450px}code{font-size:13px}
+        }
     </style>
 </head>
 <body>
     <nav><a class="btn" href="/rufflib">Home</a></nav>
-    <p>C O M I N G &nbsp; S O O N</p>
     <img src="./img/icon/rufflib-v1-256x256.gif" alt="RuffLIB Logo">
     <h1>E X P E C T</h1>
     <h3>
@@ -39,10 +45,32 @@
     </h3>
     <br>
     <aside>
-        <b>Version:</b> 1.0.0<br>
+        <b>Version:</b> 1.0.1<br>
         <b>Repo:</b> <a href="https://github.com/richplastow/rufflib-expect">https://github.com/richplastow/rufflib-expect</a><br>
         <b>Homepage:</b> <a href="https://richplastow.com/rufflib-expect">https://richplastow.com/rufflib-expect</a><br>
         <b>Tests:</b> <a href="run-browser-tests.html">run-browser-tests.html</a><br>
     </aside>
+
+    <!-- from https://codebeautify.org/code-highlighter set to Kimbie Dark -->
+    <section style="background-color:rgb(34, 26, 15);background:rgb(34, 26, 15);">
+        <pre>
+<h3>Typical usage:</h3><code style="color:rgb(211, 175, 134); font-weight:400;display:block;padding: .5em;"><span style="color:rgb(152, 103, 106); font-weight:400;">import</span> Expect <span style="color:rgb(152, 103, 106); font-weight:400;">from</span> <span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;rufflib-expect&#x27;</span>;
+
+<span style="color:rgb(152, 103, 106); font-weight:400;">const</span> testSuite = <span style="color:rgb(152, 103, 106); font-weight:400;">new</span> Expect(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Mathsy Test Suite&#x27;</span>);
+<span style="color:rgb(152, 103, 106); font-weight:400;">const</span> expect = testSuite.expect;
+
+expect().section(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Check that factorialise() works&#x27;</span>);
+expect(<span style="color:rgb(136, 155, 74); font-weight:400;">`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`</span>,
+        factorialise(<span style="color:rgb(247, 154, 50); font-weight:400;">5</span>)).toBe(<span style="color:rgb(247, 154, 50); font-weight:400;">120</span>);
+
+<span style="color:rgb(247, 154, 50); font-weight:400;">console</span>.log(testSuite.render(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Ansi&#x27;</span>)); <span style="color:rgb(214, 186, 173); font-weight:400;"></span>
+
+<span style="color:rgb(152, 103, 106); font-weight:400;"><span style="color:rgb(152, 103, 106); font-weight:400;">function</span> <span style="color:rgb(240, 100, 49); font-weight:400;">factorialise</span>(<span style="color:rgb(247, 154, 50); font-weight:400;">n</span>) </span>{
+    <span style="color:rgb(152, 103, 106); font-weight:400;">if</span> (n === <span style="color:rgb(247, 154, 50); font-weight:400;">0</span> || n === <span style="color:rgb(247, 154, 50); font-weight:400;">1</span>) <span style="color:rgb(152, 103, 106); font-weight:400;">return</span> <span style="color:rgb(247, 154, 50); font-weight:400;">1</span>;
+    <span style="color:rgb(152, 103, 106); font-weight:400;">for</span> (<span style="color:rgb(152, 103, 106); font-weight:400;">let</span> i=n-<span style="color:rgb(247, 154, 50); font-weight:400;">1</span>; i&gt;<span style="color:rgb(247, 154, 50); font-weight:400;">0</span>; i--) n *= i;
+    <span style="color:rgb(152, 103, 106); font-weight:400;">return</span> n;
+}</code></pre>
+    </section>
+    <br>
 </body>
 </html>
