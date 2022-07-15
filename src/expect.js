@@ -36,13 +36,20 @@ import render from './methods/render.js';
 //     }
 //
 export default class Expect {
+
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
+        this.suiteTitle = suiteTitle;
+        this.reset();
+    }
+
+    // Initialises all properties apart from `suiteTitle`.
+    // Called by `constructor()`, and can also make unit testing Expect simpler.
+    reset() {
         this.log = [];
         this.sections = [];
-        this.suiteTitle = suiteTitle;
 
-        // No tests have run yet, so no failures and no passes.
+        // No tests have run, so no failures and no passes.
         // So technically, the test suite status is currently ‘pass’.
         this.failTally = 0;
         this.passTally = 0;
@@ -97,5 +104,15 @@ export function test(expect, Expect) {
             mathsy.render()).toMatch(/Untitled Section:\n-{17}\n/);
     expect(`mathsy.render()`,
             mathsy.render()).toMatch(/Failed factorialise\(3\):\s+expected: 77\s+actually: 6/);
+
+
+    expect().section('reset()');
+    expect(`typeof mathsy.reset`,
+            typeof mathsy.reset).toBe('function');
+    expect(`mathsy.reset()`,
+            mathsy.reset()).toBe(undefined);
+    expect(`mathsy`, mathsy).toHave({ failTally: 0, passTally: 0, status: 'pass' });
+    expect(`mathsy.render()`,
+            mathsy.render()).toMatch(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
 
 }

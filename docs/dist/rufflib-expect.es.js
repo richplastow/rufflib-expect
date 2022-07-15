@@ -9,7 +9,7 @@
 // rufflib-expect/src/methods/generate-css.js
 
 
-const selectorRx = /^[.#]?[a-z][-_0-9a-z]*$/i;
+const RX_SELECTOR = /^[.#]?[a-z][-_0-9a-z]*$/i;
 
 /* --------------------------------- Method --------------------------------- */
 
@@ -17,7 +17,7 @@ const selectorRx = /^[.#]?[a-z][-_0-9a-z]*$/i;
 //
 // Typical usage:
 //     const $css = document.createElement('style');
-//     $css.innerHTML = Expect.generateCss('pre', '#my-test-results-container');
+//     $css.innerHTML = Expect.generateCss('#my-test-results-container', 'pre');
 //     document.head.appendChild($css);
 //
 function generateCss(
@@ -33,14 +33,14 @@ function generateCss(
         `Expect.generateCss(): the mandatory containerSelector argument is falsey`);
     if (typeof cs !== 'string') throw Error(
         `Expect.generateCss(): containerSelector is type '${typeof cs}' not 'string'`);
-    if (! selectorRx.test(cs)) throw Error(
-        `Expect.generateCss(): containerSelector fails ${selectorRx}`);
+    if (! RX_SELECTOR.test(cs)) throw Error(
+        `Expect.generateCss(): containerSelector fails ${RX_SELECTOR}`);
     if (! is) throw Error(
         `Expect.generateCss(): the mandatory innerSelector argument is falsey`);
     if (typeof is !== 'string') throw Error(
         `Expect.generateCss(): innerSelector is type '${typeof is}' not 'string'`);
-    if (! selectorRx.test(is)) throw Error(
-        `Expect.generateCss(): innerSelector fails ${selectorRx}`);
+    if (! RX_SELECTOR.test(is)) throw Error(
+        `Expect.generateCss(): innerSelector fails ${RX_SELECTOR}`);
 
     // Initialise the output array.
     // Note that our validated selectors cannot include the substring '*/', here.
@@ -136,6 +136,26 @@ function expect(
             }
         },
 
+        // Tests that `actually` is an object with an expected `error` property.
+        toError(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            if (actually?.error === expected) {
+                log.push({
+                    kind: 'Passed',
+                    sectionIndex: pass(),
+                    testTitle,
+                });
+            } else {
+                log.push({
+                    expected,
+                    actually: actually?.error,
+                    kind: 'Failed',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+        },
+
         // Tests that `actually` contains all of the keys and values in `expected`.
         toHave(expected) {
             if (! sections.length) this.section(); // there must be a section
@@ -168,26 +188,6 @@ function expect(
             });
         },
 
-        // Tests that `actually` is an object with an expected `error` property.
-        toError(expected) {
-            if (! sections.length) this.section(); // there must be a section
-            if (actually?.error === expected) {
-                log.push({
-                    kind: 'Passed',
-                    sectionIndex: pass(),
-                    testTitle,
-                });
-            } else {
-                log.push({
-                    expected,
-                    actually,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
-            }
-        },
-
         // Tests that `actually` and `expected` are identical when stringified to JSON.
         toJson(expected) {
             if (! sections.length) this.section(); // there must be a section
@@ -201,8 +201,8 @@ function expect(
                 });
             } else {
                 log.push({
-                    expected,
-                    actually,
+                    expected: eJson,
+                    actually: aJson,
                     kind: 'Failed',
                     sectionIndex: fail(),
                     testTitle,
@@ -480,13 +480,20 @@ const VERSION = '1.0.1';
 //     }
 //
 class Expect {
+
     constructor(suiteTitle='Untitled Test Suite') {
         this.expect = expect.bind(this);
+        this.suiteTitle = suiteTitle;
+        this.reset();
+    }
+
+    // Initialises all properties apart from `suiteTitle`.
+    // Called by `constructor()`, and can also make unit testing Expect simpler.
+    reset() {
         this.log = [];
         this.sections = [];
-        this.suiteTitle = suiteTitle;
 
-        // No tests have run yet, so no failures and no passes.
+        // No tests have run, so no failures and no passes.
         // So technically, the test suite status is currently ‘pass’.
         this.failTally = 0;
         this.passTally = 0;

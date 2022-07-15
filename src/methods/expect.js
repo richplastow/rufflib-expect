@@ -55,6 +55,26 @@ export default function expect(
             }
         },
 
+        // Tests that `actually` is an object with an expected `error` property.
+        toError(expected) {
+            if (! sections.length) this.section(); // there must be a section
+            if (actually?.error === expected) {
+                log.push({
+                    kind: 'Passed',
+                    sectionIndex: pass(),
+                    testTitle,
+                });
+            } else {
+                log.push({
+                    expected,
+                    actually: actually?.error,
+                    kind: 'Failed',
+                    sectionIndex: fail(),
+                    testTitle,
+                });
+            }
+        },
+
         // Tests that `actually` contains all of the keys and values in `expected`.
         toHave(expected) {
             if (! sections.length) this.section(); // there must be a section
@@ -87,26 +107,6 @@ export default function expect(
             });
         },
 
-        // Tests that `actually` is an object with an expected `error` property.
-        toError(expected) {
-            if (! sections.length) this.section(); // there must be a section
-            if (actually?.error === expected) {
-                log.push({
-                    kind: 'Passed',
-                    sectionIndex: pass(),
-                    testTitle,
-                });
-            } else {
-                log.push({
-                    expected,
-                    actually,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
-            }
-        },
-
         // Tests that `actually` and `expected` are identical when stringified to JSON.
         toJson(expected) {
             if (! sections.length) this.section(); // there must be a section
@@ -120,8 +120,8 @@ export default function expect(
                 });
             } else {
                 log.push({
-                    expected,
-                    actually,
+                    expected: eJson,
+                    actually: aJson,
                     kind: 'Failed',
                     sectionIndex: fail(),
                     testTitle,
