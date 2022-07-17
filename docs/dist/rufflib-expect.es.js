@@ -495,6 +495,22 @@ function that(
     }
 }
 
+// rufflib-expect/src/methods/section.js
+
+
+/* --------------------------------- Method --------------------------------- */
+
+// Public method which starts a new section in the current test suite.
+function section(
+    sectionTitle = 'Untitled Section'
+) {
+    this.log.push({
+        kind: 'SectionTitle',
+        sectionIndex: this.sections.push({ failTally: 0, sectionTitle }) - 1,
+        sectionTitle,
+    });
+}
+
 // rufflib-expect/src/expect.js
 
 // Assembles the `Expect` class.
@@ -514,7 +530,7 @@ const VERSION = '1.0.1';
 //     import Expect from 'rufflib-expect';
 //
 //     const expect = new Expect('Mathsy Test Suite');
-//     expect.that().section('Check that factorialise() works');
+//     expect.section('Check that factorialise() works');
 //     expect.that(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
 //                  factorialise(5)).is(120);
 //
@@ -551,6 +567,7 @@ class Expect {
 Expect.VERSION = VERSION;
 Expect.generateCss = generateCss;
 Expect.prototype.render = render;
+Expect.prototype.section = section;
 
 // rufflib-expect/src/entry-point-main.js
 

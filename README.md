@@ -14,7 +14,7 @@ __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 import Expect from 'rufflib-expect';
 
 const expect = new Expect('Mathsy Test Suite');
-expect.that().section('Check that factorialise() works');
+expect.section('Check that factorialise() works');
 expect.that(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
              factorialise(5)).is(120);
 

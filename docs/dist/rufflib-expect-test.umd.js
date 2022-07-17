@@ -25,7 +25,7 @@
   /* ---------------------------------- Tests --------------------------------- */
   // Tests Expect.generateCss().
 
-  function test$3(that, Expect) {
+  function test$4(that, Expect) {
     that().section('generateCss()'); // Basics.
 
     that("typeof Expect.generateCss", _typeof(Expect.generateCss)).is('function');
@@ -98,7 +98,7 @@
   // Tests expect.render().
 
 
-  function test$2(that, Expect) {
+  function test$3(that, Expect) {
     var expect = new Expect('My Great Test Suite'); // Basics.
 
     that().section('render() basics and exceptions');
@@ -151,7 +151,7 @@
     that("expect.render('Raw')", expect.render('Raw')).stringifiesTo(rawResultOneTest);
     that("expect.render('Raw', '', true)", expect.render('Raw', '', true)).stringifiesTo(rawResultOneTest); // Add three failing tests and a passing test, in a custom-named section.
 
-    that("expect.that().section('Second Section')", expect.that().section('Second Section')).is(undefined);
+    that("expect.section('Second Section')", expect.section('Second Section')).is(undefined);
     that("expect.that('B', 1).is(0)", expect.that('B', 1).is(0)).is(false);
     that("expect.that('C', 1).is(1)", expect.that('C', 1).is(1)).is(true);
     that("expect.that('D', {error:'Actual Error'}).hasError('Expected Error')", expect.that('D', {
@@ -241,7 +241,7 @@
   // unit tests in other RuffLIBs, to make things clearer. @TODO provide link
 
 
-  function test$1(that, Expect) {
+  function test$2(that, Expect) {
     that().section('that() Basics');
     var basics = new Expect();
     that("typeof basics.that", _typeof(basics.that)).is('function');
@@ -514,7 +514,7 @@
     that().section('that().stringifiesTo()');
     var stringifiesTo = new Expect();
     that("typeof stringifiesTo.that().stringifiesTo", _typeof(stringifiesTo.that().stringifiesTo)).is('function');
-    that("stringifiesTo.that().section('Values the same')", stringifiesTo.that().section('Values the same')).is();
+    that("stringifiesTo.section('Values the same')", stringifiesTo.section('Values the same')).is();
     that("stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })", stringifiesTo.that('A', {
       a: 1,
       b: 2
@@ -532,7 +532,7 @@
     that("stringifiesTo.that('C', 'some text').stringifiesTo('some text')", stringifiesTo.that('C', 'some text').stringifiesTo('some text')).is(true);
     that("stringifiesTo.that('D').stringifiesTo()", stringifiesTo.that('D').stringifiesTo()).is(true);
     that("stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])", stringifiesTo.that('E', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [1, 2, 3], true, null])).is(true);
-    that("has.that().section('Values differ')", has.that().section('Values differ')).is();
+    that("stringifiesTo.section('Values differ')", stringifiesTo.section('Values differ')).is();
     that("stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])", stringifiesTo.that('F', ['str', [1, 2, 3], true, null]).stringifiesTo(['nope', [1, 2, 3], true, null])).is(false);
     that("stringifiesTo.that('G', ['str', [1,2,3], true, null]).stringifiesTo(['str', [2,3,1], true, null])", stringifiesTo.that('G', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [2, 3, 1], true, null])).is(false);
     that("stringifiesTo.that('H', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false, null])", stringifiesTo.that('H', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [1, 2, 3], false, null])).is(false);
@@ -569,28 +569,32 @@
       sectionIndex: 0,
       testTitle: 'E'
     }, {
+      kind: 'SectionTitle',
+      sectionIndex: 1,
+      sectionTitle: 'Values differ'
+    }, {
       actually: '["str",[1,2,3],true,null]',
       expected: '["nope",[1,2,3],true,null]',
       kind: 'Failed',
-      sectionIndex: 0,
+      sectionIndex: 1,
       testTitle: 'F'
     }, {
       actually: '["str",[1,2,3],true,null]',
       expected: '["str",[2,3,1],true,null]',
       kind: 'Failed',
-      sectionIndex: 0,
+      sectionIndex: 1,
       testTitle: 'G'
     }, {
       actually: '["str",[1,2,3],true,null]',
       expected: '["str",[1,2,3],false,null]',
       kind: 'Failed',
-      sectionIndex: 0,
+      sectionIndex: 1,
       testTitle: 'H'
     }, {
       actually: '["str",[1,2,3],true,null]',
       expected: '["str",[1,2,3],false]',
       kind: 'Failed',
-      sectionIndex: 0,
+      sectionIndex: 1,
       testTitle: 'I'
     }]);
     that().section('that().passes()');
@@ -650,6 +654,18 @@
       sectionIndex: 0,
       testTitle: 'F'
     }]);
+  } // rufflib-expect/src/methods/section.js
+
+  /* ---------------------------------- Tests --------------------------------- */
+  // Tests Expect.section().
+
+
+  function test$1(tt, Expect) {
+    tt().section('section()');
+    var expect = new Expect();
+    tt("typeof expect.section", _typeof(expect.section)).is('function');
+    tt("typeof expect.section('FooBar Section')", _typeof(expect.section('FooBar Section'))).is('undefined');
+    tt("expect.render(undefined, '', true)", expect.render(undefined, '', true)).passes(/FooBar Section/);
   } // rufflib-expect/src/expect.js
   // Assembles the `Expect` class.
 
@@ -715,8 +731,9 @@
 
   function expectTest(that, Expect) {
     test(that, Expect);
-    test$1(that, Expect);
+    test$4(that, Expect);
     test$3(that, Expect);
+    test$1(that, Expect);
     test$2(that, Expect);
   }
 

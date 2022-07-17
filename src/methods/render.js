@@ -372,8 +372,8 @@ export function test(that, Expect) {
           expect.render('Raw', '', true)).stringifiesTo(rawResultOneTest);
 
     // Add three failing tests and a passing test, in a custom-named section.
-    that(`expect.that().section('Second Section')`,
-          expect.that().section('Second Section')).is(undefined);
+    that(`expect.section('Second Section')`,
+          expect.section('Second Section')).is(undefined);
     that(`expect.that('B', 1).is(0)`,
           expect.that('B', 1).is(0)).is(false);
     that(`expect.that('C', 1).is(1)`,

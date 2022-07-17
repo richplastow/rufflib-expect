@@ -371,8 +371,8 @@ export function test(that, Expect) {
     const stringifiesTo = new Expect();
     that(`typeof stringifiesTo.that().stringifiesTo`,
           typeof stringifiesTo.that().stringifiesTo).is('function');
-    that(`stringifiesTo.that().section('Values the same')`,
-          stringifiesTo.that().section('Values the same')).is();
+    that(`stringifiesTo.section('Values the same')`,
+          stringifiesTo.section('Values the same')).is();
     that(`stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })`,
           stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })).is(true);
     that(`stringifiesTo.that('B', { a:1, b:2 }).stringifiesTo({ b:2, a:1 }) // order matters`,
@@ -383,8 +383,8 @@ export function test(that, Expect) {
           stringifiesTo.that('D').stringifiesTo()).is(true);
     that(`stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])`,
           stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])).is(true);
-    that(`has.that().section('Values differ')`,
-          has.that().section('Values differ')).is();
+    that(`stringifiesTo.section('Values differ')`,
+          stringifiesTo.section('Values differ')).is();
     that(`stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])`,
           stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])).is(false);
     that(`stringifiesTo.that('G', ['str', [1,2,3], true, null]).stringifiesTo(['str', [2,3,1], true, null])`,
@@ -413,31 +413,36 @@ export function test(that, Expect) {
               { kind: 'Passed', sectionIndex: 0, testTitle: 'D' },
               { kind: 'Passed', sectionIndex: 0, testTitle: 'E' },
               {
+                kind: 'SectionTitle',
+                sectionIndex: 1,
+                sectionTitle: 'Values differ'
+              },
+              {
                 actually: '["str",[1,2,3],true,null]',
                 expected: '["nope",[1,2,3],true,null]',
                 kind: 'Failed',
-                sectionIndex: 0,
+                sectionIndex: 1,
                 testTitle: 'F'
               },
               {
                 actually: '["str",[1,2,3],true,null]',
                 expected: '["str",[2,3,1],true,null]',
                 kind: 'Failed',
-                sectionIndex: 0,
+                sectionIndex: 1,
                 testTitle: 'G'
               },
               {
                 actually: '["str",[1,2,3],true,null]',
                 expected: '["str",[1,2,3],false,null]',
                 kind: 'Failed',
-                sectionIndex: 0,
+                sectionIndex: 1,
                 testTitle: 'H'
               },
               {
                 actually: '["str",[1,2,3],true,null]',
                 expected: '["str",[1,2,3],false]',
                 kind: 'Failed',
-                sectionIndex: 0,
+                sectionIndex: 1,
                 testTitle: 'I'
               }
           ]);

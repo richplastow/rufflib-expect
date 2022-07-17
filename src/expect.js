@@ -10,6 +10,7 @@ const VERSION = '1.0.1';
 import generateCss from './methods/generate-css.js';
 import render from './methods/render.js';
 import that from './methods/that.js';
+import section from './methods/section.js';
 
 
 /* ---------------------------------- Class --------------------------------- */
@@ -21,7 +22,7 @@ import that from './methods/that.js';
 //     import Expect from 'rufflib-expect';
 //
 //     const expect = new Expect('Mathsy Test Suite');
-//     expect.that().section('Check that factorialise() works');
+//     expect.section('Check that factorialise() works');
 //     expect.that(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
 //                  factorialise(5)).is(120);
 //
@@ -58,6 +59,7 @@ export default class Expect {
 Expect.VERSION = VERSION;
 Expect.generateCss = generateCss;
 Expect.prototype.render = render;
+Expect.prototype.section = section;
 
 
 /* ---------------------------------- Tests --------------------------------- */
