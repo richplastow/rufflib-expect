@@ -5,7 +5,7 @@
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '1.0.1';
+const VERSION = '2.0.0';
 
 import generateCss from './methods/generate-css.js';
 import render from './methods/render.js';

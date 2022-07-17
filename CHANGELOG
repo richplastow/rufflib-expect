@@ -3,3 +3,6 @@ initial release
 
 20220712^RP 1.0.1
 adds usage example to homepage
+
+20220716^RP 2.0.0
+renames some methods (breaking change)

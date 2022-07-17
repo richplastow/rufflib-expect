@@ -2,7 +2,7 @@
 
 __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 
-▶&nbsp; __Version:__ 1.0.1  
+▶&nbsp; __Version:__ 2.0.0  
 ▶&nbsp; __Repo:__ <https://github.com/richplastow/rufflib-expect>  
 ▶&nbsp; __Homepage:__ <https://richplastow.com/rufflib-expect>  
 ▶&nbsp; __Tests:__ <https://richplastow.com/rufflib-expect/run-browser-tests.html>  
