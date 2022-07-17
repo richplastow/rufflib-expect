@@ -125,60 +125,65 @@ function expect(
                     sectionIndex: pass(),
                     testTitle,
                 });
-            } else {
-                log.push({
-                    expected,
-                    actually,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
+                return true;
             }
+            log.push({
+                actually,
+                expected,
+                kind: 'Failed',
+                sectionIndex: fail(),
+                testTitle,
+            });
+            return false;
         },
 
         // Tests that `actually` is an object with an expected `error` property.
+        // @TODO allow `expected` to be a regexp, or other object with a `test()` method
         toError(expected) {
             if (! sections.length) this.section(); // there must be a section
-            if (actually?.error === expected) {
+            if (actually && actually?.error === expected) {
                 log.push({
                     kind: 'Passed',
                     sectionIndex: pass(),
                     testTitle,
                 });
-            } else {
-                log.push({
-                    expected,
-                    actually: actually?.error,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
+                return true;
             }
+            log.push({
+                actually: actually ? actually?.error : actually,
+                expected,
+                kind: 'Failed',
+                sectionIndex: fail(),
+                testTitle,
+            });
+            return false;
         },
 
         // Tests that `actually` contains all of the keys and values in `expected`.
         toHave(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually.error) {
-                return log.push({
-                    expected,
-                    actually,
+                log.push({
+                    actually: actually.error,
+                    expected: JSON.stringify(expected),
                     kind: 'Error',
                     sectionIndex: fail(),
                     testTitle,
                 });
+                return false;
             }
             for (let key in expected) {
                 const aJson = JSON.stringify(actually[key]);
                 const eJson = JSON.stringify(expected[key]);
                 if (aJson !== eJson) {
-                    return log.push({
-                        expected: eJson,
+                    log.push({
                         actually: aJson,
+                        expected: eJson,
                         kind: 'Failed',
                         sectionIndex: fail(),
                         testTitle: `${testTitle}.${key}`,
                     });
+                    return false;
                 }
             }
             log.push({
@@ -186,6 +191,7 @@ function expect(
                 sectionIndex: pass(),
                 testTitle,
             });
+            return true;
         },
 
         // Tests that `actually` and `expected` are identical when stringified to JSON.
@@ -199,36 +205,38 @@ function expect(
                     sectionIndex: pass(),
                     testTitle,
                 });
-            } else {
-                log.push({
-                    expected: eJson,
-                    actually: aJson,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
+                return true;
             }
+            log.push({
+                actually: aJson,
+                expected: eJson,
+                kind: 'Failed',
+                sectionIndex: fail(),
+                testTitle,
+            });
+            return false;
         },
 
         // Tests that `actually` passes the test defined by `expected`.
         // Typically used for regular expression tests.
         toMatch(expected) {
             if (! sections.length) this.section(); // there must be a section
-            if (expected.test(actually)) {
+            if (expected && expected?.test(actually)) {
                 log.push({
                     kind: 'Passed',
                     sectionIndex: pass(),
                     testTitle,
                 });
-            } else {
-                log.push({
-                    expected,
-                    actually,
-                    kind: 'Failed',
-                    sectionIndex: fail(),
-                    testTitle,
-                });
+                return true;
             }
+            log.push({
+                actually,
+                expected,
+                kind: 'Failed',
+                sectionIndex: fail(),
+                testTitle,
+            });
+            return false;
         },
     }
 }
@@ -237,6 +245,8 @@ function expect(
 
 
 /* -------------------------------- Constants ------------------------------- */
+
+const ERROR_PREFIX = 'expect.render(): ';
 
 // Colours and styles for for ANSI text, eg for a Terminal.
 const ANSI_BOLD = '\u001b[1m';
@@ -278,7 +288,7 @@ function render(
         Raw: _renderRaw,
     })[format];
     if (! renderer) throw Error(
-        `Expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
+        `${ERROR_PREFIX}unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
     return renderer(log, failTally, passTally, sections, suiteTitle,
         sectionMustContain.toLowerCase(), verbose);
 }
@@ -300,7 +310,7 @@ function _renderAnsi(log, failTally, passTally, sections, suiteTitle, smcLc, ver
                     case 'Error':
                         return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
                             + `  ${ANSI_DIM}actually is an error:${ANSI_MID}\n`
-                            + `  ${item.actually.error}\n`;
+                            + `  ${item.actually}\n`;
                     case 'Failed':
                         return `${ANSI_FAIL}Failed${ANSI_LIAF} ${item.testTitle}:\n`
                             + `  ${ANSI_DIM}expected:${ANSI_MID} ${item.expected}\n`
@@ -310,11 +320,11 @@ function _renderAnsi(log, failTally, passTally, sections, suiteTitle, smcLc, ver
                             ? `${ANSI_PASS}Passed${ANSI_SSAP} ${item.testTitle}\n`
                             : '';
                     case 'SectionTitle':
-                        return verbose || item.failTally
+                        return verbose || sections[item.sectionIndex].failTally
                             ? `\n${ANSI_BOLD}${item.sectionTitle}:${ANSI_DLOB}\n`
                                 + '-'.repeat(item.sectionTitle.length+1) + '\n'
                             : '';
-                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                    default: throw Error(`${ERROR_PREFIX}unexpected item.kind`);
                 }
             }
         })
@@ -354,7 +364,7 @@ function _renderHtml(log, failTally, passTally, sections, suiteTitle, smcLc, ver
                     case 'Error':
                         return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
                             + `  ${HTML_DIM}actually is an error:${HTML_MID}\n`
-                            + `  ${item.actually.error}`;
+                            + `  ${item.actually}\n`;
                     case 'Failed':
                         return `${HTML_FAIL}Failed${HTML_LIAF} ${item.testTitle}:\n`
                             + `  ${HTML_DIM}expected:${HTML_MID} ${item.expected}\n`
@@ -364,10 +374,10 @@ function _renderHtml(log, failTally, passTally, sections, suiteTitle, smcLc, ver
                             ? `${HTML_PASS}Passed${HTML_SSAP} ${item.testTitle}\n`
                             : '';
                     case 'SectionTitle':
-                        return verbose || item.failTally
+                        return verbose || sections[item.sectionIndex].failTally
                             ? `\n${HTML_BOLD}${item.sectionTitle}:${HTML_DLOB}\n`
                             : '';
-                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                    default: throw Error(`${ERROR_PREFIX}unexpected item.kind`);
                 }
             }
         })
@@ -388,6 +398,46 @@ function _renderSummaryHtml(failTally, passTally, suiteTitle) {
     ;
 }
 
+// Renders the test results summary as a stringified JSON object, eg for logging.
+function _renderJson(log, failTally, passTally, sections, suiteTitle, smcLc, verbose) {
+    return '{\n'
+        + `  "fail_tally": ${failTally},\n`
+        + `  "pass_tally": ${passTally},\n`
+        + `  "status": "${failTally ? 'fail' : 'pass'}",\n`
+        + `  "suite_title": "${suiteTitle}",\n` // @TODO escape suiteTitle
+        + `  "log": [\n`
+        + log.map(item => {
+            const sectionTitle = item.sectionTitle
+                ? item.sectionTitle
+                : sections[item.sectionIndex].sectionTitle
+            ;
+            if (sectionTitle.toLowerCase().includes(smcLc)) {
+                switch (item.kind) {
+                    case 'Error':
+                        return `    { "kind": "Error", "test_title": "${item.testTitle}",\n`
+                             + `      "error": ${JSON.stringify(item.actually)} },\n`
+                    case 'Failed':
+                        return `    { "kind": "Failed", "test_title": "${item.testTitle}",\n`
+                             + `      "expected": ${JSON.stringify(item.expected)},\n`
+                             + `      "actually": ${JSON.stringify(item.actually)} },\n`;
+                    case 'Passed':
+                        return verbose
+                            ? `    { "kind": "Passed", "test_title": "${item.testTitle}" },\n`
+                            : '';
+                    case 'SectionTitle':
+                        return verbose || sections[item.sectionIndex].failTally
+                            ? `    { "kind": "SectionTitle", "section_title": "${item.sectionTitle}" },\n`
+                            : '';
+                    default: throw Error(`${ERROR_PREFIX}unexpected item.kind`);
+                }
+            }
+        })
+        .join('')
+        .slice(0, -2) // remove the trailing comma
+        + '\n  ]\n}'
+    ;
+}
+
 // Renders test results for plain text output, eg to a '.txt' file.
 function _renderPlain(log, failTally, passTally, sections, suiteTitle, smcLc, verbose) {
     const summary = _renderSummaryPlain(failTally, passTally, suiteTitle);
@@ -402,7 +452,7 @@ function _renderPlain(log, failTally, passTally, sections, suiteTitle, smcLc, ve
                     case 'Error':
                         return `Failed ${item.testTitle}:\n`
                             + `  actually is an error:\n`
-                            + `  ${item.actually.error}\n`;
+                            + `  ${item.actually}\n`;
                     case 'Failed':
                         return `Failed ${item.testTitle}:\n`
                             + `  expected: ${item.expected}\n`
@@ -416,7 +466,7 @@ function _renderPlain(log, failTally, passTally, sections, suiteTitle, smcLc, ve
                             ? `\n${item.sectionTitle}:\n`
                                 + '-'.repeat(item.sectionTitle.length+1) + '\n'
                             : '';
-                    default: throw Error(`Expect.render(): unexpected item.kind`);
+                    default: throw Error(`${ERROR_PREFIX}unexpected item.kind`);
                 }
             }
         })
@@ -442,9 +492,8 @@ function _renderSummaryPlain(failTally, passTally, suiteTitle) {
     ;
 }
 
-// @TODO
-function _renderJson(log) { }
-function _renderRaw(log) { }
+// Returns the test suite’s `log` property as-is.
+function _renderRaw(log) { return log }
 
 // rufflib-expect/src/expect.js
 

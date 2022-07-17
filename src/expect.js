@@ -93,10 +93,10 @@ export function test(expect, Expect) {
 
     const mathsy = new Expect('Mathsy Test Suite');
     expect(`mathsy.expect('factorialise(5)', factorialise(5)).toBe(120)`,
-            mathsy.expect('factorialise(5)', factorialise(5)).toBe(120)).toBe(undefined);
+            mathsy.expect('factorialise(5)', factorialise(5)).toBe(120)).toBe(true);
     expect(`mathsy`, mathsy).toHave({ failTally: 0, passTally: 1, status: 'pass' });
     expect(`mathsy.expect('factorialise(3)', factorialise(3)).toBe(77)`,
-            mathsy.expect('factorialise(3)', factorialise(3)).toBe(77)).toBe(undefined);
+            mathsy.expect('factorialise(3)', factorialise(3)).toBe(77)).toBe(false);
     expect(`mathsy`, mathsy).toHave({ failTally: 1, passTally: 1, status: 'fail' });
     expect(`mathsy.render()`,
             mathsy.render()).toMatch(/Mathsy Test Suite\n={17}\nFailed 1 of 2\n/);

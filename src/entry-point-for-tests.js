@@ -6,6 +6,7 @@
 import { test as testExpect } from './expect.js';
 import { test as testExpectExpect } from './methods/expect.js';
 import { test as testGenerateCss } from './methods/generate-css.js';
+import { test as testRender } from './methods/render.js';
 
 // Run each test. You can comment-out some during development, to help focus on
 // individual tests. But make sure all tests are uncommented before committing.
@@ -14,5 +15,6 @@ export default function expectTest(expect, Expect) {
     testExpect(expect, Expect);
     testExpectExpect(expect, Expect);
     testGenerateCss(expect, Expect);
+    testRender(expect, Expect);
 
 }
