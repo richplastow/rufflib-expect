@@ -56,14 +56,12 @@
         <pre>
 <h3>Typical usage:</h3><code style="color:rgb(211, 175, 134); font-weight:400;display:block;padding: .5em;"><span style="color:rgb(152, 103, 106); font-weight:400;">import</span> Expect <span style="color:rgb(152, 103, 106); font-weight:400;">from</span> <span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;rufflib-expect&#x27;</span>;
 
-<span style="color:rgb(152, 103, 106); font-weight:400;">const</span> testSuite = <span style="color:rgb(152, 103, 106); font-weight:400;">new</span> Expect(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Mathsy Test Suite&#x27;</span>);
-<span style="color:rgb(152, 103, 106); font-weight:400;">const</span> expect = testSuite.expect;
+<span style="color:rgb(152, 103, 106); font-weight:400;">const</span> expect = <span style="color:rgb(152, 103, 106); font-weight:400;">new</span> Expect(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Mathsy Test Suite&#x27;</span>);
+expect.that().section(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Check that factorialise() works&#x27;</span>);
+expect.that(<span style="color:rgb(136, 155, 74); font-weight:400;">`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`</span>,
+             factorialise(<span style="color:rgb(247, 154, 50); font-weight:400;">5</span>)).is(<span style="color:rgb(247, 154, 50); font-weight:400;">120</span>);
 
-expect().section(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Check that factorialise() works&#x27;</span>);
-expect(<span style="color:rgb(136, 155, 74); font-weight:400;">`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`</span>,
-        factorialise(<span style="color:rgb(247, 154, 50); font-weight:400;">5</span>)).toBe(<span style="color:rgb(247, 154, 50); font-weight:400;">120</span>);
-
-<span style="color:rgb(247, 154, 50); font-weight:400;">console</span>.log(testSuite.render(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Ansi&#x27;</span>)); <span style="color:rgb(214, 186, 173); font-weight:400;"></span>
+<span style="color:rgb(247, 154, 50); font-weight:400;">console</span>.log(expect.render(<span style="color:rgb(136, 155, 74); font-weight:400;">&#x27;Ansi&#x27;</span>)); <span style="color:rgb(214, 186, 173); font-weight:400;"></span>
 
 <span style="color:rgb(152, 103, 106); font-weight:400;"><span style="color:rgb(152, 103, 106); font-weight:400;">function</span> <span style="color:rgb(240, 100, 49); font-weight:400;">factorialise</span>(<span style="color:rgb(247, 154, 50); font-weight:400;">n</span>) </span>{
     <span style="color:rgb(152, 103, 106); font-weight:400;">if</span> (n === <span style="color:rgb(247, 154, 50); font-weight:400;">0</span> || n === <span style="color:rgb(247, 154, 50); font-weight:400;">1</span>) <span style="color:rgb(152, 103, 106); font-weight:400;">return</span> <span style="color:rgb(247, 154, 50); font-weight:400;">1</span>;

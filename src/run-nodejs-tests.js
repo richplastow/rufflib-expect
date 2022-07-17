@@ -19,11 +19,11 @@ if (Expect.VERSION !== process.env.npm_package_version) throw Error(
     `Expect.VERSION '${Expect.VERSION}' !== package.json version`);
 
 // Run the test suite.
-const testSuite = new Expect('Expect Test Suite (src, NodeJS)');
-expectTest(testSuite.expect, Expect);
+const expect = new Expect('Expect Test Suite (src, NodeJS)');
+expectTest(expect.that, Expect);
 
 // Display the results.
-console.log(testSuite.render('Ansi', sectionMustContain, showFullResults));
+console.log(expect.render('Ansi', sectionMustContain, showFullResults));
 
 // Display handy hints.
 console.log(`Hint: omit '--src' to run tests in docs/`);
@@ -39,4 +39,4 @@ console.log(`Hint: ${sectionMustContain ? 'omit' : 'use'} '--section=${
 // Set the exit code to `0` if the test suite passed, which signifies that this
 // script terminated without error. Otherwise set the exit code to `1`, which
 // could be used to halt a CI/CD pipeline.
-process.exit(testSuite.status === 'pass' ? 0 : 1);
+process.exit(expect.status === 'pass' ? 0 : 1);

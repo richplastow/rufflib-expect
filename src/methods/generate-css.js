@@ -75,47 +75,47 @@ export default function generateCss(
 /* ---------------------------------- Tests --------------------------------- */
 
 // Tests Expect.generateCss().
-export function test(expect, Expect) {
-    expect().section('generateCss()');
+export function test(that, Expect) {
+    that().section('generateCss()');
 
     // Basics.
-    expect(`typeof Expect.generateCss`,
-            typeof Expect.generateCss).toBe('function');
-    expect(`typeof Expect.generateCss('a', 'b')`,
-            typeof Expect.generateCss('a', 'b')).toBe('string');
-    expect(`Expect.generateCss('a', 'b').split('\\n').length`,
-            Expect.generateCss('a', 'b').split('\n').length).toBe(18);
+    that(`typeof Expect.generateCss`,
+          typeof Expect.generateCss).toBe('function');
+    that(`typeof Expect.generateCss('a', 'b')`,
+          typeof Expect.generateCss('a', 'b')).toBe('string');
+    that(`Expect.generateCss('a', 'b').split('\\n').length`,
+          Expect.generateCss('a', 'b').split('\n').length).toBe(18);
 
     // Incorrect arguments should throw exceptions.
     let exc;
     const OK = 'Did not encounter an exception';
-    try {   Expect.generateCss(); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss()`, exc)
+    try { Expect.generateCss(); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss()`, exc)
         .toBe(`Error: Expect.generateCss(): the mandatory containerSelector argument is falsey`);
-    try {   Expect.generateCss([]); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss([])`, exc)
+    try { Expect.generateCss([]); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss([])`, exc)
         .toBe(`Error: Expect.generateCss(): containerSelector is type 'object' not 'string'`);
-    try {   Expect.generateCss('a b'); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss('a b')`, exc)
+    try { Expect.generateCss('a b'); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss('a b')`, exc)
         .toBe(`Error: Expect.generateCss(): containerSelector fails ${RX_SELECTOR}`);
-    try {   Expect.generateCss('abc'); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss('abc')`, exc)
+    try { Expect.generateCss('abc'); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss('abc')`, exc)
         .toBe(`Error: Expect.generateCss(): the mandatory innerSelector argument is falsey`);
-    try {   Expect.generateCss('.a', []); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss('.a', [])`, exc)
+    try { Expect.generateCss('.a', []); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss('.a', [])`, exc)
         .toBe(`Error: Expect.generateCss(): innerSelector is type 'object' not 'string'`);
-    try {   Expect.generateCss('#abc', 'abc*/'); exc = OK } catch (e) { exc = `${e}` }
-    expect(`Expect.generateCss('#abc', 'abc*/')`, exc)
+    try { Expect.generateCss('#abc', 'abc*/'); exc = OK } catch (e) { exc = `${e}` }
+    that(`Expect.generateCss('#abc', 'abc*/')`, exc)
         .toBe(`Error: Expect.generateCss(): innerSelector fails ${RX_SELECTOR}`);
 
     // Typical usage.
-    expect(`Expect.generateCss('container', 'inner') // first line`,
-            Expect.generateCss('container', 'inner')).toMatch(
-            /^\/\* Expect\.generateCss\('container', 'inner'\) \*\/\n/);
-    expect(`Expect.generateCss('#c-s', '.i_s') // a middle line`,
-            Expect.generateCss('#c-s', '.i_s')).toMatch(
-            /\n#c-s\.fail .i_s{background:#411;color:#fce}\n/);
-    expect(`Expect.generateCss('#c-s', '.i_s') // last line`,
-            Expect.generateCss('#c-s', '.i_s')).toMatch(
-            /\n.i_s s{color:#9c8293;text-decoration:none}$/);
+    that(`Expect.generateCss('container', 'inner') // first line`,
+          Expect.generateCss('container', 'inner')).toMatch(
+          /^\/\* Expect\.generateCss\('container', 'inner'\) \*\/\n/);
+    that(`Expect.generateCss('#c-s', '.i_s') // a middle line`,
+          Expect.generateCss('#c-s', '.i_s')).toMatch(
+          /\n#c-s\.fail .i_s{background:#411;color:#fce}\n/);
+    that(`Expect.generateCss('#c-s', '.i_s') // last line`,
+          Expect.generateCss('#c-s', '.i_s')).toMatch(
+          /\n.i_s s{color:#9c8293;text-decoration:none}$/);
 }

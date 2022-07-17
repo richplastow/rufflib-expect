@@ -13,14 +13,12 @@ __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 ```js
 import Expect from 'rufflib-expect';
 
-const testSuite = new Expect('Mathsy Test Suite');
-const expect = testSuite.expect;
+const expect = new Expect('Mathsy Test Suite');
+expect.that().section('Check that factorialise() works');
+expect.that(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
+             factorialise(5)).is(120);
 
-expect().section('Check that factorialise() works');
-expect(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
-        factorialise(5)).toBe(120);
-
-console.log(testSuite.render('Ansi'));
+console.log(expect.render('Ansi'));
 
 function factorialise(n) {
     if (n === 0 || n === 1) return 1;
