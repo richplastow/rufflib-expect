@@ -28,9 +28,9 @@
   function test$3(that, Expect) {
     that().section('generateCss()'); // Basics.
 
-    that("typeof Expect.generateCss", _typeof(Expect.generateCss)).toBe('function');
-    that("typeof Expect.generateCss('a', 'b')", _typeof(Expect.generateCss('a', 'b'))).toBe('string');
-    that("Expect.generateCss('a', 'b').split('\\n').length", Expect.generateCss('a', 'b').split('\n').length).toBe(18); // Incorrect arguments should throw exceptions.
+    that("typeof Expect.generateCss", _typeof(Expect.generateCss)).is('function');
+    that("typeof Expect.generateCss('a', 'b')", _typeof(Expect.generateCss('a', 'b'))).is('string');
+    that("Expect.generateCss('a', 'b').split('\\n').length", Expect.generateCss('a', 'b').split('\n').length).is(18); // Incorrect arguments should throw exceptions.
 
     var exc;
     var OK = 'Did not encounter an exception';
@@ -42,7 +42,7 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss()", exc).toBe("Error: Expect.generateCss(): the mandatory containerSelector argument is falsey");
+    that("Expect.generateCss()", exc).is("Error: Expect.generateCss(): the mandatory containerSelector argument is falsey");
 
     try {
       Expect.generateCss([]);
@@ -51,7 +51,7 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss([])", exc).toBe("Error: Expect.generateCss(): containerSelector is type 'object' not 'string'");
+    that("Expect.generateCss([])", exc).is("Error: Expect.generateCss(): containerSelector is type 'object' not 'string'");
 
     try {
       Expect.generateCss('a b');
@@ -60,7 +60,7 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss('a b')", exc).toBe("Error: Expect.generateCss(): containerSelector fails ".concat(RX_SELECTOR));
+    that("Expect.generateCss('a b')", exc).is("Error: Expect.generateCss(): containerSelector fails ".concat(RX_SELECTOR));
 
     try {
       Expect.generateCss('abc');
@@ -69,7 +69,7 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss('abc')", exc).toBe("Error: Expect.generateCss(): the mandatory innerSelector argument is falsey");
+    that("Expect.generateCss('abc')", exc).is("Error: Expect.generateCss(): the mandatory innerSelector argument is falsey");
 
     try {
       Expect.generateCss('.a', []);
@@ -78,7 +78,7 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss('.a', [])", exc).toBe("Error: Expect.generateCss(): innerSelector is type 'object' not 'string'");
+    that("Expect.generateCss('.a', [])", exc).is("Error: Expect.generateCss(): innerSelector is type 'object' not 'string'");
 
     try {
       Expect.generateCss('#abc', 'abc*/');
@@ -87,11 +87,11 @@
       exc = "".concat(e);
     }
 
-    that("Expect.generateCss('#abc', 'abc*/')", exc).toBe("Error: Expect.generateCss(): innerSelector fails ".concat(RX_SELECTOR)); // Typical usage.
+    that("Expect.generateCss('#abc', 'abc*/')", exc).is("Error: Expect.generateCss(): innerSelector fails ".concat(RX_SELECTOR)); // Typical usage.
 
-    that("Expect.generateCss('container', 'inner') // first line", Expect.generateCss('container', 'inner')).toMatch(/^\/\* Expect\.generateCss\('container', 'inner'\) \*\/\n/);
-    that("Expect.generateCss('#c-s', '.i_s') // a middle line", Expect.generateCss('#c-s', '.i_s')).toMatch(/\n#c-s\.fail .i_s{background:#411;color:#fce}\n/);
-    that("Expect.generateCss('#c-s', '.i_s') // last line", Expect.generateCss('#c-s', '.i_s')).toMatch(/\n.i_s s{color:#9c8293;text-decoration:none}$/);
+    that("Expect.generateCss('container', 'inner') // first line", Expect.generateCss('container', 'inner')).passes(/^\/\* Expect\.generateCss\('container', 'inner'\) \*\/\n/);
+    that("Expect.generateCss('#c-s', '.i_s') // a middle line", Expect.generateCss('#c-s', '.i_s')).passes(/\n#c-s\.fail .i_s{background:#411;color:#fce}\n/);
+    that("Expect.generateCss('#c-s', '.i_s') // last line", Expect.generateCss('#c-s', '.i_s')).passes(/\n.i_s s{color:#9c8293;text-decoration:none}$/);
   } // rufflib-expect/src/methods/render.js
 
   /* ---------------------------------- Tests --------------------------------- */
@@ -99,46 +99,46 @@
 
 
   function test$2(that, Expect) {
-    var testedExpect = new Expect('My Great Test Suite'); // Basics.
+    var expect = new Expect('My Great Test Suite'); // Basics.
 
     that().section('render() basics and exceptions');
-    that("typeof testedExpect.render", _typeof(testedExpect.render)).toBe('function');
-    that("typeof testedExpect.render('Ansi')", _typeof(testedExpect.render('Ansi'))).toBe('string');
-    that("typeof testedExpect.render('Html')", _typeof(testedExpect.render('Html'))).toBe('string');
-    that("typeof testedExpect.render('Json')", _typeof(testedExpect.render('Json'))).toBe('string');
-    that("typeof testedExpect.render('Plain')", _typeof(testedExpect.render('Plain'))).toBe('string');
-    that("typeof testedExpect.render('Raw')", _typeof(testedExpect.render('Raw'))).toBe('object');
-    that("Array.isArray(testedExpect.render('Raw'))", Array.isArray(testedExpect.render('Raw'))).toBe(true); // Incorrect arguments should throw exceptions.
+    that("typeof expect.render", _typeof(expect.render)).is('function');
+    that("typeof expect.render('Ansi')", _typeof(expect.render('Ansi'))).is('string');
+    that("typeof expect.render('Html')", _typeof(expect.render('Html'))).is('string');
+    that("typeof expect.render('Json')", _typeof(expect.render('Json'))).is('string');
+    that("typeof expect.render('Plain')", _typeof(expect.render('Plain'))).is('string');
+    that("typeof expect.render('Raw')", _typeof(expect.render('Raw'))).is('object');
+    that("Array.isArray(expect.render('Raw'))", Array.isArray(expect.render('Raw'))).is(true); // Incorrect arguments should throw exceptions.
 
     var exc;
     var OK = 'Did not encounter an exception';
 
     try {
-      testedExpect.render(123);
+      expect.render(123);
       exc = OK;
     } catch (e) {
       exc = "".concat(e);
     }
 
-    that("testedExpect.render(123)", exc).toBe("Error: expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'"); // Before any tests have been specified.
+    that("expect.render(123)", exc).is("Error: expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'"); // Before any tests have been specified.
 
     that().section('render() with no tests');
-    that("testedExpect.render('Ansi')", testedExpect.render('Ansi')).toMatch(/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 0 tests\n-{79}\n$/);
-    that("testedExpect.render('Html')", testedExpect.render('Html')).toBe('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 0 tests\n<hr>\n');
-    that("testedExpect.render('Json')", testedExpect.render('Json')).toBe(['{', '  "fail_tally": 0,', '  "pass_tally": 0,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Plain')", testedExpect.render('Plain')).toMatch(/^-{79}\nMy Great Test Suite\n={19}\nPassed 0 tests\n-{79}\n$/);
-    that("testedExpect.render('Raw')", testedExpect.render('Raw')).toJson([]); // One passing test, in a defaultly-named section.
+    that("expect.render('Ansi')", expect.render('Ansi')).passes(/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 0 tests\n-{79}\n$/);
+    that("expect.render('Html')", expect.render('Html')).is('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 0 tests\n<hr>\n');
+    that("expect.render('Json')", expect.render('Json')).is(['{', '  "fail_tally": 0,', '  "pass_tally": 0,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '', '  ]', '}'].join('\n'));
+    that("expect.render('Plain')", expect.render('Plain')).passes(/^-{79}\nMy Great Test Suite\n={19}\nPassed 0 tests\n-{79}\n$/);
+    that("expect.render('Raw')", expect.render('Raw')).stringifiesTo([]); // One passing test, in a defaultly-named section.
 
     that().section('render() with tests');
-    that("testedExpect.that('A', 1).toBe(1) // same test as in 'that().toBe()'", testedExpect.that('A', 1).toBe(1)).toBe(true);
-    that("testedExpect.render('Ansi')", testedExpect.render('Ansi')).toMatch(/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 1 test\n-{79}\n$/);
-    that("testedExpect.render('Ansi', '', true)", testedExpect.render('Ansi', '', true)).toMatch(/-{79}\n\n\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n\u001b\[32m√ Passed\u001b\[0m A\n\n\n-{79}\n/);
-    that("testedExpect.render('Html')", testedExpect.render('Html')).toBe('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
-    that("testedExpect.render('Html', '', true)", testedExpect.render('Html', '', true)).toBe('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n' + '\n<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
-    that("testedExpect.render('Json')", testedExpect.render('Json')).toBe(['{', '  "fail_tally": 0,', '  "pass_tally": 1,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Json', '', true)", testedExpect.render('Json', '', true)).toBe(['{', '  "fail_tally": 0,', '  "pass_tally": 1,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" }', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Plain')", testedExpect.render('Plain')).toMatch(/^-{79}\nMy Great Test Suite\n={19}\nPassed 1 test\n-{79}\n$/);
-    that("testedExpect.render('Plain', '', true)", testedExpect.render('Plain', '', true)).toMatch(/-{79}\n\nUntitled Section:\n-{17}\nPassed A\n\n\n-{79}\n/);
+    that("expect.that('A', 1).is(1) // same test as in 'that().is()'", expect.that('A', 1).is(1)).is(true);
+    that("expect.render('Ansi')", expect.render('Ansi')).passes(/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 1 test\n-{79}\n$/);
+    that("expect.render('Ansi', '', true)", expect.render('Ansi', '', true)).passes(/-{79}\n\n\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n\u001b\[32m√ Passed\u001b\[0m A\n\n\n-{79}\n/);
+    that("expect.render('Html')", expect.render('Html')).is('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
+    that("expect.render('Html', '', true)", expect.render('Html', '', true)).is('<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n' + '\n<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
+    that("expect.render('Json')", expect.render('Json')).is(['{', '  "fail_tally": 0,', '  "pass_tally": 1,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '', '  ]', '}'].join('\n'));
+    that("expect.render('Json', '', true)", expect.render('Json', '', true)).is(['{', '  "fail_tally": 0,', '  "pass_tally": 1,', '  "status": "pass",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" }', '  ]', '}'].join('\n'));
+    that("expect.render('Plain')", expect.render('Plain')).passes(/^-{79}\nMy Great Test Suite\n={19}\nPassed 1 test\n-{79}\n$/);
+    that("expect.render('Plain', '', true)", expect.render('Plain', '', true)).passes(/-{79}\n\nUntitled Section:\n-{17}\nPassed A\n\n\n-{79}\n/);
     var rawResultOneTest = [{
       kind: 'SectionTitle',
       sectionIndex: 0,
@@ -148,50 +148,50 @@
       sectionIndex: 0,
       testTitle: 'A'
     }];
-    that("testedExpect.render('Raw')", testedExpect.render('Raw')).toJson(rawResultOneTest);
-    that("testedExpect.render('Raw', '', true)", testedExpect.render('Raw', '', true)).toJson(rawResultOneTest); // Add three failing tests and a passing test, in a custom-named section.
+    that("expect.render('Raw')", expect.render('Raw')).stringifiesTo(rawResultOneTest);
+    that("expect.render('Raw', '', true)", expect.render('Raw', '', true)).stringifiesTo(rawResultOneTest); // Add three failing tests and a passing test, in a custom-named section.
 
-    that("testedExpect.that().section('Second Section')", testedExpect.that().section('Second Section')).toBe(undefined);
-    that("testedExpect.that('B', 1).toBe(0)", testedExpect.that('B', 1).toBe(0)).toBe(false);
-    that("testedExpect.that('C', 1).toBe(1)", testedExpect.that('C', 1).toBe(1)).toBe(true);
-    that("testedExpect.that('D', {error:'Actual Error'}).toError('Expected Error')", testedExpect.that('D', {
+    that("expect.that().section('Second Section')", expect.that().section('Second Section')).is(undefined);
+    that("expect.that('B', 1).is(0)", expect.that('B', 1).is(0)).is(false);
+    that("expect.that('C', 1).is(1)", expect.that('C', 1).is(1)).is(true);
+    that("expect.that('D', {error:'Actual Error'}).hasError('Expected Error')", expect.that('D', {
       error: 'Actual Error'
-    }).toError('Expected Error')).toBe(false);
-    that("testedExpect.that('E', {error:'Unexpectedly Error'}).toHave({a:1})", testedExpect.that('E', {
+    }).hasError('Expected Error')).is(false);
+    that("expect.that('E', {error:'Unexpectedly Error'}).has({a:1})", expect.that('E', {
       error: 'Unexpectedly Error'
-    }).toHave({
+    }).has({
       a: 1
-    })).toBe(false);
-    that("testedExpect.render('Ansi')", testedExpect.render('Ansi')).toMatch(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n$/].map(function (r) {
+    })).is(false);
+    that("expect.render('Ansi')", expect.render('Ansi')).passes(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n$/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Ansi', 'untitled', true)", testedExpect.render('Ansi', 'untitled', true)).toMatch(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/, /\u001b\[32m√ Passed\u001b\[0m A\n\n\n-{79}\n/, /\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n$/].map(function (r) {
+    that("expect.render('Ansi', 'untitled', true)", expect.render('Ansi', 'untitled', true)).passes(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/, /\u001b\[32m√ Passed\u001b\[0m A\n\n\n-{79}\n/, /\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n$/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Ansi', 'second', true)", testedExpect.render('Ansi', 'second', true)).toMatch(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[32m√ Passed\u001b\[0m C\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n\n\n/, /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/].map(function (r) {
+    that("expect.render('Ansi', 'second', true)", expect.render('Ansi', 'second', true)).passes(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[32m√ Passed\u001b\[0m C\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n\n\n/, /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Ansi', '', true)", testedExpect.render('Ansi', '', true)).toMatch(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/, /\u001b\[32m√ Passed\u001b\[0m A\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[32m√ Passed\u001b\[0m C\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n\n\n/, /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/].map(function (r) {
+    that("expect.render('Ansi', '', true)", expect.render('Ansi', '', true)).passes(new RegExp([/^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/, /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/, /\u001b\[32m√ Passed\u001b\[0m A\n\n/, /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/, /\u001b\[31mX Failed\u001b\[0m B:\n/, /  \u001b\[2mexpected:\u001b\[0m 0\n/, /  \u001b\[2mactually:\u001b\[0m 1\n/, /\u001b\[32m√ Passed\u001b\[0m C\n/, /\u001b\[31mX Failed\u001b\[0m D:\n/, /  \u001b\[2mexpected:\u001b\[0m Expected Error\n/, /  \u001b\[2mactually:\u001b\[0m Actual Error\n/, /\u001b\[31mX Failed\u001b\[0m E:\n/, /  \u001b\[2mactually is an error:\u001b\[0m\n/, /  Unexpectedly Error\n\n\n/, /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/, /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Html')", testedExpect.render('Html')).toBe('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Second Section:</b>\n' + '<u>X Failed</u> B:\n  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n');
-    that("testedExpect.render('Html', 'untitled', true)", testedExpect.render('Html', 'untitled', true)).toBe('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that("testedExpect.render('Html', 'second', true)", testedExpect.render('Html', 'second', true)).toBe('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Second Section:</b>\n<u>X Failed</u> B:\n' + '  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<i>√ Passed</i> C\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that("testedExpect.render('Html', '', true)", testedExpect.render('Html', '', true)).toBe('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n' + '<b>Second Section:</b>\n<u>X Failed</u> B:\n' + '  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<i>√ Passed</i> C\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that("testedExpect.render('Json')", testedExpect.render('Json')).toBe(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Json', 'untitled', true)", testedExpect.render('Json', 'untitled', true)).toBe(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" }', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Json', 'second', true)", testedExpect.render('Json', 'second', true)).toBe(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Passed", "test_title": "C" },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Json', '', true)", testedExpect.render('Json', '', true)).toBe(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" },', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Passed", "test_title": "C" },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
-    that("testedExpect.render('Plain')", testedExpect.render('Plain')).toMatch(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error/].map(function (r) {
+    that("expect.render('Html')", expect.render('Html')).is('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Second Section:</b>\n' + '<u>X Failed</u> B:\n  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n');
+    that("expect.render('Html', 'untitled', true)", expect.render('Html', 'untitled', true)).is('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
+    that("expect.render('Html', 'second', true)", expect.render('Html', 'second', true)).is('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Second Section:</b>\n<u>X Failed</u> B:\n' + '  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<i>√ Passed</i> C\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
+    that("expect.render('Html', '', true)", expect.render('Html', '', true)).is('<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n' + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n' + '<b>Second Section:</b>\n<u>X Failed</u> B:\n' + '  <s>expected:</s> 0\n  <s>actually:</s> 1\n' + '<i>√ Passed</i> C\n' + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n' + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n' + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
+    that("expect.render('Json')", expect.render('Json')).is(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
+    that("expect.render('Json', 'untitled', true)", expect.render('Json', 'untitled', true)).is(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" }', '  ]', '}'].join('\n'));
+    that("expect.render('Json', 'second', true)", expect.render('Json', 'second', true)).is(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Passed", "test_title": "C" },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
+    that("expect.render('Json', '', true)", expect.render('Json', '', true)).is(['{', '  "fail_tally": 3,', '  "pass_tally": 2,', '  "status": "fail",', '  "suite_title": "My Great Test Suite",', '  "log": [', '    { "kind": "SectionTitle", "section_title": "Untitled Section" },', '    { "kind": "Passed", "test_title": "A" },', '    { "kind": "SectionTitle", "section_title": "Second Section" },', '    { "kind": "Failed", "test_title": "B",', '      "expected": 0,', '      "actually": 1 },', '    { "kind": "Passed", "test_title": "C" },', '    { "kind": "Failed", "test_title": "D",', '      "expected": "Expected Error",', '      "actually": "Actual Error" },', '    { "kind": "Error", "test_title": "E",', '      "error": "Unexpectedly Error" }', '  ]', '}'].join('\n'));
+    that("expect.render('Plain')", expect.render('Plain')).passes(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Plain', 'untitled', true)", testedExpect.render('Plain', 'untitled', true)).toMatch(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Untitled Section:\n-{17}\n/, /Passed A\n\n\n-{79}\n/, /My Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n$/].map(function (r) {
+    that("expect.render('Plain', 'untitled', true)", expect.render('Plain', 'untitled', true)).passes(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Untitled Section:\n-{17}\n/, /Passed A\n\n\n-{79}\n/, /My Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n$/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Plain', 'second', true)", testedExpect.render('Plain', 'second', true)).toMatch(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Passed C\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error\n\n\n/, /-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}/].map(function (r) {
+    that("expect.render('Plain', 'second', true)", expect.render('Plain', 'second', true)).passes(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Passed C\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error\n\n\n/, /-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}/].map(function (r) {
       return r.source;
     }).join('')));
-    that("testedExpect.render('Plain', '', true)", testedExpect.render('Plain', '', true)).toMatch(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Untitled Section:\n-{17}\n/, /Passed A\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Passed C\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error\n\n\n/, /-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}/].map(function (r) {
+    that("expect.render('Plain', '', true)", expect.render('Plain', '', true)).passes(new RegExp([/^-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}\n\n/, /Untitled Section:\n-{17}\n/, /Passed A\n\n/, /Second Section:\n-{15}\n/, /Failed B:\n/, /  expected: 0\n/, /  actually: 1\n/, /Passed C\n/, /Failed D:\n/, /  expected: Expected Error\n/, /  actually: Actual Error\n/, /Failed E:\n/, /  actually is an error:\n/, /  Unexpectedly Error\n\n\n/, /-{79}\nMy Great Test Suite\n={19}\n/, /Failed 3 of 5\n-{79}/].map(function (r) {
       return r.source;
     }).join('')));
     var rawResultFourTests = [{
@@ -229,10 +229,10 @@
       sectionIndex: 1,
       testTitle: 'E'
     }];
-    that("testedExpect.render('Raw')", testedExpect.render('Raw')).toJson(rawResultFourTests);
-    that("testedExpect.render('Raw', 'untitled', true)", testedExpect.render('Raw', 'untitled', true)).toJson(rawResultFourTests);
-    that("testedExpect.render('Raw', 'second', true)", testedExpect.render('Raw', 'second', true)).toJson(rawResultFourTests);
-    that("testedExpect.render('Raw', '', true)", testedExpect.render('Raw', '', true)).toJson(rawResultFourTests);
+    that("expect.render('Raw')", expect.render('Raw')).stringifiesTo(rawResultFourTests);
+    that("expect.render('Raw', 'untitled', true)", expect.render('Raw', 'untitled', true)).stringifiesTo(rawResultFourTests);
+    that("expect.render('Raw', 'second', true)", expect.render('Raw', 'second', true)).stringifiesTo(rawResultFourTests);
+    that("expect.render('Raw', '', true)", expect.render('Raw', '', true)).stringifiesTo(rawResultFourTests);
   } // rufflib-expect/src/methods/expect.js
 
   /* ---------------------------------- Tests --------------------------------- */
@@ -244,24 +244,24 @@
   function test$1(that, Expect) {
     that().section('that() Basics');
     var basics = new Expect();
-    that("typeof basics.that", _typeof(basics.that)).toBe('function');
-    that("typeof basics.that()", _typeof(basics.that())).toBe('object');
+    that("typeof basics.that", _typeof(basics.that)).is('function');
+    that("typeof basics.that()", _typeof(basics.that())).is('object');
     that().section('that().section()');
     var fooBarSection = new Expect();
-    that("typeof fooBarSection.that().section", _typeof(fooBarSection.that().section)).toBe('function');
-    that("fooBarSection.that().section('FooBar Section')", fooBarSection.that().section('FooBar Section')).toBe(undefined);
-    that("fooBarSection.render(undefined, '', true)", fooBarSection.render(undefined, '', true)).toMatch(/FooBar Section/);
-    that().section('that().toBe()');
-    var toBe = new Expect();
-    that("typeof toBe.that().toBe", _typeof(toBe.that().toBe)).toBe('function');
-    that("toBe.that('A', 1).toBe(1)", toBe.that('A', 1).toBe(1)).toBe(true);
-    that("toBe", toBe).toHave({
+    that("typeof fooBarSection.that().section", _typeof(fooBarSection.that().section)).is('function');
+    that("fooBarSection.that().section('FooBar Section')", fooBarSection.that().section('FooBar Section')).is(undefined);
+    that("fooBarSection.render(undefined, '', true)", fooBarSection.render(undefined, '', true)).passes(/FooBar Section/);
+    that().section('that().is()');
+    var is = new Expect();
+    that("typeof is.that().is", _typeof(is.that().is)).is('function');
+    that("is.that('A', 1).is(1)", is.that('A', 1).is(1)).is(true);
+    that("is", is).has({
       failTally: 0,
       passTally: 1,
       status: 'pass'
     });
-    that("toBe.that('B', true).toBe(1) // note that true == 1, but true !== 1", toBe.that('B', true).toBe(1)).toBe(false);
-    that("toBe", toBe).toHave({
+    that("is.that('B', true).is(1) // note that true == 1, but true !== 1", is.that('B', true).is(1)).is(false);
+    that("is", is).has({
       failTally: 1,
       passTally: 1,
       status: 'fail'
@@ -269,21 +269,21 @@
     var obj = {
       ok: 123
     };
-    that("toBe.that('C', obj).toBe(obj)", toBe.that('C', obj).toBe(obj)).toBe(true);
-    that("toBe", toBe).toHave({
+    that("is.that('C', obj).is(obj)", is.that('C', obj).is(obj)).is(true);
+    that("is", is).has({
       failTally: 1,
       passTally: 2,
       status: 'fail'
     });
-    that("toBe.that('D', obj).toBe({ ok:123 })", toBe.that('D', obj).toBe({
+    that("is.that('D', obj).is({ ok:123 })", is.that('D', obj).is({
       ok: 123
-    })).toBe(false);
-    that("toBe", toBe).toHave({
+    })).is(false);
+    that("is", is).has({
       failTally: 2,
       passTally: 2,
       status: 'fail'
     });
-    that("toBe.render('Raw')", toBe.render('Raw')).toJson([{
+    that("is.render('Raw')", is.render('Raw')).stringifiesTo([{
       kind: 'SectionTitle',
       sectionIndex: 0,
       sectionTitle: 'Untitled Section'
@@ -312,34 +312,34 @@
       sectionIndex: 0,
       testTitle: 'D'
     }]);
-    that().section('that().toError()');
-    var toError = new Expect();
-    that("typeof toError.that().toError", _typeof(toError.that().toError)).toBe('function');
-    that("toError.that('A', { error:'Expected Error' }).toError('Expected Error')", toError.that('A', {
+    that().section('that().hasError()');
+    var hasError = new Expect();
+    that("typeof hasError.that().hasError", _typeof(hasError.that().hasError)).is('function');
+    that("hasError.that('A', { error:'Expected Error' }).hasError('Expected Error')", hasError.that('A', {
       error: 'Expected Error'
-    }).toError('Expected Error')).toBe(true);
-    that("toError.that('B', { error:'' }).toError('')", toError.that('B', {
+    }).hasError('Expected Error')).is(true);
+    that("hasError.that('B', { error:'' }).hasError('')", hasError.that('B', {
       error: ''
-    }).toError('')).toBe(true);
-    that("toError.that('C', { error:123 }).toError(123)", toError.that('C', {
+    }).hasError('')).is(true);
+    that("hasError.that('C', { error:123 }).hasError(123)", hasError.that('C', {
       error: 123
-    }).toError(123)).toBe(true);
-    that("toError.that('D', { error:'Expected Error' }).toError({ error:'Nope!' })", toError.that('D', {
+    }).hasError(123)).is(true);
+    that("hasError.that('D', { error:'Expected Error' }).hasError({ error:'Nope!' })", hasError.that('D', {
       error: 'Expected Error'
-    }).toError({
+    }).hasError({
       error: 'Nope!'
-    })).toBe(false);
-    that("toError.that('E', { error:'Expected Error' }).toError(123)", toError.that('E', {
+    })).is(false);
+    that("hasError.that('E', { error:'Expected Error' }).hasError(123)", hasError.that('E', {
       error: 'Expected Error'
-    }).toError(123)).toBe(false);
-    that("toError.that('F', null).toError('no error on a null') // null is (sorta) an object", toError.that('F', null).toError('no error on a null')).toBe(false);
-    that("toError.that('G').toError()", toError.that('G').toError()).toBe(false);
-    that("toError", toError).toHave({
+    }).hasError(123)).is(false);
+    that("hasError.that('F', null).hasError('no error on a null') // null is (sorta) an object", hasError.that('F', null).hasError('no error on a null')).is(false);
+    that("hasError.that('G').hasError()", hasError.that('G').hasError()).is(false);
+    that("hasError", hasError).has({
       failTally: 4,
       passTally: 3,
       status: 'fail'
     });
-    that("toError.render('Raw')", toError.render('Raw')).toJson([{
+    that("hasError.render('Raw')", hasError.render('Raw')).stringifiesTo([{
       kind: 'SectionTitle',
       sectionIndex: 0,
       sectionTitle: 'Untitled Section'
@@ -380,80 +380,80 @@
       sectionIndex: 0,
       testTitle: 'G'
     }]);
-    that().section('that().toHave()');
-    var toHave = new Expect();
-    that("typeof toHave.that().toHave", _typeof(toHave.that().toHave)).toBe('function');
-    that("toHave.that('A', { a:1, b:null, c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] })", toHave.that('A', {
+    that().section('that().has()');
+    var has = new Expect();
+    that("typeof has.that().has", _typeof(has.that().has)).is('function');
+    that("has.that('A', { a:1, b:null, c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] })", has.that('A', {
       a: 1,
       b: null,
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       a: 1,
       b: null,
       c: [1, 2, 3]
-    })).toBe(true);
-    that("toHave.that('B', { a:1, b:null, c:[1,2,3] }).toHave({ c:[1,2,3] }) // ok this way...", toHave.that('B', {
+    })).is(true);
+    that("has.that('B', { a:1, b:null, c:[1,2,3] }).has({ c:[1,2,3] }) // ok this way...", has.that('B', {
       a: 1,
       b: null,
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       c: [1, 2, 3]
-    })).toBe(true);
-    that("toHave.that('C', { c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] }) // ...but not this way", toHave.that('C', {
+    })).is(true);
+    that("has.that('C', { c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] }) // ...but not this way", has.that('C', {
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       a: 1,
       b: null,
       c: [1, 2, 3]
-    })).toBe(false);
-    that("toHave.that('D', { a:1, b:null, c:[1,2,3] }).toHave({}) // empty expected object", toHave.that('D', {
+    })).is(false);
+    that("has.that('D', { a:1, b:null, c:[1,2,3] }).has({}) // empty expected object", has.that('D', {
       a: 1,
       b: null,
       c: [1, 2, 3]
-    }).toHave({})).toBe(true);
-    that("toHave.that('E', { a:1, b:null, c:[1,2,3] }).toHave(123) // expected is not an object", toHave.that('E', {
+    }).has({})).is(true);
+    that("has.that('E', { a:1, b:null, c:[1,2,3] }).has(123) // expected is not an object", has.that('E', {
       a: 1,
       b: null,
       c: [1, 2, 3]
-    }).toHave(123)).toBe(true);
-    that("toHave.that('F', 123).toHave({ a:1 }) // actually is not an object", toHave.that('F', 123).toHave({
+    }).has(123)).is(true);
+    that("has.that('F', 123).has({ a:1 }) // actually is not an object", has.that('F', 123).has({
       a: 1
-    })).toBe(false);
-    that("toHave.that('G', { a:1, error:'Oh no!' }).toHave({ a:1 }) // matching a:1 is ignored", toHave.that('G', {
+    })).is(false);
+    that("has.that('G', { a:1, error:'Oh no!' }).has({ a:1 }) // matching a:1 is ignored", has.that('G', {
       a: 1,
       error: 'Oh no!'
-    }).toHave({
+    }).has({
       a: 1
-    })).toBe(false);
-    that("toHave.that().section('Values differ')", toHave.that().section('Values differ')).toBe();
-    that("toHave.that('H', { a:2, b:null, c:[1,2,3] }).toHave({ a:1 }) // a is different", toHave.that('H', {
+    })).is(false);
+    that("has.that().section('Values differ')", has.that().section('Values differ')).is();
+    that("has.that('H', { a:2, b:null, c:[1,2,3] }).has({ a:1 }) // a is different", has.that('H', {
       a: 2,
       b: null,
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       a: 1
-    })).toBe(false);
-    that("toHave.that('I', { a:1, b:undefined, c:[1,2,3] }).toHave({ a:1, b:null }) // undefined !== null", toHave.that('I', {
+    })).is(false);
+    that("has.that('I', { a:1, b:undefined, c:[1,2,3] }).has({ a:1, b:null }) // undefined !== null", has.that('I', {
       a: 1,
       b: undefined,
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       a: 1,
       b: null
-    })).toBe(false);
-    that("toHave.that('J', { a:1, b:null, c:[1,2,3] }).toHave({ c:[2,3,1] }) // c array-content is different", toHave.that('J', {
+    })).is(false);
+    that("has.that('J', { a:1, b:null, c:[1,2,3] }).has({ c:[2,3,1] }) // c array-content is different", has.that('J', {
       a: 1,
       b: null,
       c: [1, 2, 3]
-    }).toHave({
+    }).has({
       c: [2, 3, 1]
-    })).toBe(false);
-    that("toHave", toHave).toHave({
+    })).is(false);
+    that("has", has).has({
       failTally: 6,
       passTally: 4,
       status: 'fail'
     });
-    that("toHave.render('Raw')", toHave.render('Raw')).toJson([{
+    that("has.render('Raw')", has.render('Raw')).stringifiesTo([{
       kind: 'SectionTitle',
       sectionIndex: 0,
       sectionTitle: 'Untitled Section'
@@ -511,38 +511,38 @@
       sectionIndex: 1,
       testTitle: 'J.c'
     }]);
-    that().section('that().toJson()');
-    var toJson = new Expect();
-    that("typeof toJson.that().toJson", _typeof(toJson.that().toJson)).toBe('function');
-    that("toJson.that().section('Values the same')", toJson.that().section('Values the same')).toBe();
-    that("toJson.that('A', { a:1, b:2 }).toJson({ a:1, b:2 })", toJson.that('A', {
+    that().section('that().stringifiesTo()');
+    var stringifiesTo = new Expect();
+    that("typeof stringifiesTo.that().stringifiesTo", _typeof(stringifiesTo.that().stringifiesTo)).is('function');
+    that("stringifiesTo.that().section('Values the same')", stringifiesTo.that().section('Values the same')).is();
+    that("stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })", stringifiesTo.that('A', {
       a: 1,
       b: 2
-    }).toJson({
+    }).stringifiesTo({
       a: 1,
       b: 2
-    })).toBe(true);
-    that("toJson.that('B', { a:1, b:2 }).toJson({ b:2, a:1 }) // order matters", toJson.that('B', {
+    })).is(true);
+    that("stringifiesTo.that('B', { a:1, b:2 }).stringifiesTo({ b:2, a:1 }) // order matters", stringifiesTo.that('B', {
       a: 1,
       b: 2
-    }).toJson({
+    }).stringifiesTo({
       b: 2,
       a: 1
-    })).toBe(false);
-    that("toJson.that('C', 'some text').toJson('some text')", toJson.that('C', 'some text').toJson('some text')).toBe(true);
-    that("toJson.that('D').toJson()", toJson.that('D').toJson()).toBe(true);
-    that("toJson.that('E', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], true, null])", toJson.that('E', ['str', [1, 2, 3], true, null]).toJson(['str', [1, 2, 3], true, null])).toBe(true);
-    that("toHave.that().section('Values differ')", toHave.that().section('Values differ')).toBe();
-    that("toJson.that('F', ['str', [1,2,3], true, null]).toJson(['nope', [1,2,3], true, null])", toJson.that('F', ['str', [1, 2, 3], true, null]).toJson(['nope', [1, 2, 3], true, null])).toBe(false);
-    that("toJson.that('G', ['str', [1,2,3], true, null]).toJson(['str', [2,3,1], true, null])", toJson.that('G', ['str', [1, 2, 3], true, null]).toJson(['str', [2, 3, 1], true, null])).toBe(false);
-    that("toJson.that('H', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false, null])", toJson.that('H', ['str', [1, 2, 3], true, null]).toJson(['str', [1, 2, 3], false, null])).toBe(false);
-    that("toJson.that('I', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false])", toJson.that('I', ['str', [1, 2, 3], true, null]).toJson(['str', [1, 2, 3], false])).toBe(false);
-    that("toJson", toJson).toHave({
+    })).is(false);
+    that("stringifiesTo.that('C', 'some text').stringifiesTo('some text')", stringifiesTo.that('C', 'some text').stringifiesTo('some text')).is(true);
+    that("stringifiesTo.that('D').stringifiesTo()", stringifiesTo.that('D').stringifiesTo()).is(true);
+    that("stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])", stringifiesTo.that('E', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [1, 2, 3], true, null])).is(true);
+    that("has.that().section('Values differ')", has.that().section('Values differ')).is();
+    that("stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])", stringifiesTo.that('F', ['str', [1, 2, 3], true, null]).stringifiesTo(['nope', [1, 2, 3], true, null])).is(false);
+    that("stringifiesTo.that('G', ['str', [1,2,3], true, null]).stringifiesTo(['str', [2,3,1], true, null])", stringifiesTo.that('G', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [2, 3, 1], true, null])).is(false);
+    that("stringifiesTo.that('H', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false, null])", stringifiesTo.that('H', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [1, 2, 3], false, null])).is(false);
+    that("stringifiesTo.that('I', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false])", stringifiesTo.that('I', ['str', [1, 2, 3], true, null]).stringifiesTo(['str', [1, 2, 3], false])).is(false);
+    that("stringifiesTo", stringifiesTo).has({
       failTally: 5,
       passTally: 4,
       status: 'fail'
     });
-    that("toJson.render('Raw')", toJson.render('Raw')).toJson([{
+    that("stringifiesTo.render('Raw')", stringifiesTo.render('Raw')).stringifiesTo([{
       kind: 'SectionTitle',
       sectionIndex: 0,
       sectionTitle: 'Values the same'
@@ -593,29 +593,29 @@
       sectionIndex: 0,
       testTitle: 'I'
     }]);
-    that().section('that().toMatch()');
-    var toMatch = new Expect();
-    that("typeof toMatch.that().toMatch", _typeof(toMatch.that().toMatch)).toBe('function');
-    that("toMatch.that('A', 'abc').toMatch(/^abc$/)", toMatch.that('A', 'abc').toMatch(/^abc$/)).toBe(true);
-    that("toMatch.that('B', 'abc').toMatch(/^xyz$/)", toMatch.that('B', 'abc').toMatch(/^xyz$/)).toBe(false);
-    that("toMatch.that('C', 'abc').toMatch({ test:s=>s=='abc' })", toMatch.that('C', 'abc').toMatch({
+    that().section('that().passes()');
+    var passes = new Expect();
+    that("typeof passes.that().passes", _typeof(passes.that().passes)).is('function');
+    that("passes.that('A', 'abc').passes(/^abc$/)", passes.that('A', 'abc').passes(/^abc$/)).is(true);
+    that("passes.that('B', 'abc').passes(/^xyz$/)", passes.that('B', 'abc').passes(/^xyz$/)).is(false);
+    that("passes.that('C', 'abc').passes({ test:s=>s=='abc' })", passes.that('C', 'abc').passes({
       test: function test(s) {
         return s == 'abc';
       }
-    })).toBe(true);
-    that("toMatch.that('D', 'abc').toMatch({ test:s=>s=='xyz' })", toMatch.that('D', 'abc').toMatch({
+    })).is(true);
+    that("passes.that('D', 'abc').passes({ test:s=>s=='xyz' })", passes.that('D', 'abc').passes({
       test: function test(s) {
         return s == 'xyz';
       }
-    })).toBe(false);
-    that("toMatch.that('E').toMatch(/^abc$/)", toMatch.that('E').toMatch(/^abc$/)).toBe(false);
-    that("toMatch.that('F', 'abc').toMatch()", toMatch.that('F', 'abc').toMatch()).toBe(false);
-    that("toMatch", toMatch).toHave({
+    })).is(false);
+    that("passes.that('E').passes(/^abc$/)", passes.that('E').passes(/^abc$/)).is(false);
+    that("passes.that('F', 'abc').passes()", passes.that('F', 'abc').passes()).is(false);
+    that("passes", passes).has({
       failTally: 4,
       passTally: 2,
       status: 'fail'
     });
-    that("toMatch.render('Raw')", toMatch.render('Raw')).toJson([{
+    that("passes.render('Raw')", passes.render('Raw')).stringifiesTo([{
       kind: 'SectionTitle',
       sectionIndex: 0,
       sectionTitle: 'Untitled Section'
@@ -662,10 +662,10 @@
 
   function test(that, Expect) {
     that().section('Expect basics');
-    that("typeof Expect // in JavaScript, a class is type 'function'", _typeof(Expect)).toBe('function');
-    that("Expect.VERSION", Expect.VERSION).toBe(VERSION);
-    that("typeof new Expect()", _typeof(new Expect())).toBe('object');
-    that("new Expect()", new Expect()).toHave({
+    that("typeof Expect // in JavaScript, a class is type 'function'", _typeof(Expect)).is('function');
+    that("Expect.VERSION", Expect.VERSION).is(VERSION);
+    that("typeof new Expect()", _typeof(new Expect())).is('object');
+    that("new Expect()", new Expect()).has({
       failTally: 0,
       passTally: 0,
       status: 'pass'
@@ -682,32 +682,32 @@
       return n;
     }
 
-    that("factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1", factorialise(5)).toBe(120);
-    var mathsy = new Expect('Mathsy Test Suite');
-    that("mathsy.that('factorialise(5)', factorialise(5)).toBe(120)", mathsy.that('factorialise(5)', factorialise(5)).toBe(120)).toBe(true);
-    that("mathsy", mathsy).toHave({
+    that("factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1", factorialise(5)).is(120);
+    var expect = new Expect('Mathsy Test Suite');
+    that("expect.that('factorialise(5)', factorialise(5)).is(120)", expect.that('factorialise(5)', factorialise(5)).is(120)).is(true);
+    that("expect", expect).has({
       failTally: 0,
       passTally: 1,
       status: 'pass'
     });
-    that("mathsy.that('factorialise(3)', factorialise(3)).toBe(77)", mathsy.that('factorialise(3)', factorialise(3)).toBe(77)).toBe(false);
-    that("mathsy", mathsy).toHave({
+    that("expect.that('factorialise(3)', factorialise(3)).is(77)", expect.that('factorialise(3)', factorialise(3)).is(77)).is(false);
+    that("expect", expect).has({
       failTally: 1,
       passTally: 1,
       status: 'fail'
     });
-    that("mathsy.render()", mathsy.render()).toMatch(/Mathsy Test Suite\n={17}\nFailed 1 of 2\n/);
-    that("mathsy.render()", mathsy.render()).toMatch(/Untitled Section:\n-{17}\n/);
-    that("mathsy.render()", mathsy.render()).toMatch(/Failed factorialise\(3\):\s+expected: 77\s+actually: 6/);
+    that("expect.render()", expect.render()).passes(/Mathsy Test Suite\n={17}\nFailed 1 of 2\n/);
+    that("expect.render()", expect.render()).passes(/Untitled Section:\n-{17}\n/);
+    that("expect.render()", expect.render()).passes(/Failed factorialise\(3\):\s+expected: 77\s+actually: 6/);
     that().section('reset()');
-    that("typeof mathsy.reset", _typeof(mathsy.reset)).toBe('function');
-    that("mathsy.reset()", mathsy.reset()).toBe(undefined);
-    that("mathsy", mathsy).toHave({
+    that("typeof expect.reset", _typeof(expect.reset)).is('function');
+    that("expect.reset()", expect.reset()).is(undefined);
+    that("expect", expect).has({
       failTally: 0,
       passTally: 0,
       status: 'pass'
     });
-    that("mathsy.render()", mathsy.render()).toMatch(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
+    that("expect.render()", expect.render()).passes(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
   } // rufflib-expect/src/entry-point-for-tests.js
   // Run each test. You can comment-out some during development, to help focus on
   // individual tests. But make sure all tests are uncommented before committing.

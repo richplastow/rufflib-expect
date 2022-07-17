@@ -36,7 +36,7 @@ export default function that(
         },
 
         // Tests that `actually` and `expected` are strictly equal.
-        toBe(expected) {
+        is(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually === expected) {
                 log.push({
@@ -58,7 +58,7 @@ export default function that(
 
         // Tests that `actually` is an object with an expected `error` property.
         // @TODO allow `expected` to be a regexp, or other object with a `test()` method
-        toError(expected) {
+        hasError(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually && actually?.error === expected) {
                 log.push({
@@ -79,7 +79,7 @@ export default function that(
         },
 
         // Tests that `actually` contains all of the keys and values in `expected`.
-        toHave(expected) {
+        has(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually.error) {
                 log.push({
@@ -114,7 +114,7 @@ export default function that(
         },
 
         // Tests that `actually` and `expected` are identical when stringified to JSON.
-        toJson(expected) {
+        stringifiesTo(expected) {
             if (! sections.length) this.section(); // there must be a section
             const aJson = JSON.stringify(actually);
             const eJson = JSON.stringify(expected);
@@ -138,7 +138,7 @@ export default function that(
 
         // Tests that `actually` passes the test defined by `expected`.
         // Typically used for regular expression tests.
-        toMatch(expected) {
+        passes(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (expected && expected?.test(actually)) {
                 log.push({
@@ -171,38 +171,38 @@ export function test(that, Expect) {
     that().section('that() Basics');
     const basics = new Expect();
     that(`typeof basics.that`,
-          typeof basics.that).toBe('function');
+          typeof basics.that).is('function');
     that(`typeof basics.that()`,
-          typeof basics.that()).toBe('object');
+          typeof basics.that()).is('object');
 
     that().section('that().section()');
     const fooBarSection = new Expect();
     that(`typeof fooBarSection.that().section`,
-          typeof fooBarSection.that().section).toBe('function');
+          typeof fooBarSection.that().section).is('function');
     that(`fooBarSection.that().section('FooBar Section')`,
-          fooBarSection.that().section('FooBar Section')).toBe(undefined);
+          fooBarSection.that().section('FooBar Section')).is(undefined);
     that(`fooBarSection.render(undefined, '', true)`,
-          fooBarSection.render(undefined, '', true)).toMatch(/FooBar Section/);
+          fooBarSection.render(undefined, '', true)).passes(/FooBar Section/);
 
-    that().section('that().toBe()');
-    const toBe = new Expect();
-    that(`typeof toBe.that().toBe`,
-          typeof toBe.that().toBe).toBe('function');
-    that(`toBe.that('A', 1).toBe(1)`,
-          toBe.that('A', 1).toBe(1)).toBe(true);
-    that(`toBe`, toBe).toHave({ failTally: 0, passTally: 1, status: 'pass' });
-    that(`toBe.that('B', true).toBe(1) // note that true == 1, but true !== 1`,
-          toBe.that('B', true).toBe(1)).toBe(false);
-    that(`toBe`, toBe).toHave({ failTally: 1, passTally: 1, status: 'fail' });
+    that().section('that().is()');
+    const is = new Expect();
+    that(`typeof is.that().is`,
+          typeof is.that().is).is('function');
+    that(`is.that('A', 1).is(1)`,
+          is.that('A', 1).is(1)).is(true);
+    that(`is`, is).has({ failTally: 0, passTally: 1, status: 'pass' });
+    that(`is.that('B', true).is(1) // note that true == 1, but true !== 1`,
+          is.that('B', true).is(1)).is(false);
+    that(`is`, is).has({ failTally: 1, passTally: 1, status: 'fail' });
     const obj = { ok:123 };
-    that(`toBe.that('C', obj).toBe(obj)`,
-          toBe.that('C', obj).toBe(obj)).toBe(true);
-    that(`toBe`, toBe).toHave({ failTally: 1, passTally: 2, status: 'fail' });
-    that(`toBe.that('D', obj).toBe({ ok:123 })`,
-          toBe.that('D', obj).toBe({ ok:123 })).toBe(false);
-    that(`toBe`, toBe).toHave({ failTally: 2, passTally: 2, status: 'fail' });
-    that(`toBe.render('Raw')`,
-          toBe.render('Raw')).toJson([
+    that(`is.that('C', obj).is(obj)`,
+          is.that('C', obj).is(obj)).is(true);
+    that(`is`, is).has({ failTally: 1, passTally: 2, status: 'fail' });
+    that(`is.that('D', obj).is({ ok:123 })`,
+          is.that('D', obj).is({ ok:123 })).is(false);
+    that(`is`, is).has({ failTally: 2, passTally: 2, status: 'fail' });
+    that(`is.render('Raw')`,
+          is.render('Raw')).stringifiesTo([
               {
                   kind: 'SectionTitle',
                   sectionIndex: 0,
@@ -226,27 +226,27 @@ export function test(that, Expect) {
               }
           ]);
 
-    that().section('that().toError()');
-    const toError = new Expect();
-    that(`typeof toError.that().toError`,
-          typeof toError.that().toError).toBe('function');
-    that(`toError.that('A', { error:'Expected Error' }).toError('Expected Error')`,
-          toError.that('A', { error:'Expected Error' }).toError('Expected Error')).toBe(true);
-    that(`toError.that('B', { error:'' }).toError('')`,
-          toError.that('B', { error:'' }).toError('')).toBe(true);
-    that(`toError.that('C', { error:123 }).toError(123)`,
-          toError.that('C', { error:123 }).toError(123)).toBe(true);
-    that(`toError.that('D', { error:'Expected Error' }).toError({ error:'Nope!' })`,
-          toError.that('D', { error:'Expected Error' }).toError({ error:'Nope!' })).toBe(false);
-    that(`toError.that('E', { error:'Expected Error' }).toError(123)`,
-          toError.that('E', { error:'Expected Error' }).toError(123)).toBe(false);
-    that(`toError.that('F', null).toError('no error on a null') // null is (sorta) an object`,
-          toError.that('F', null).toError('no error on a null')).toBe(false);
-    that(`toError.that('G').toError()`,
-          toError.that('G').toError()).toBe(false);
-    that(`toError`, toError).toHave({ failTally: 4, passTally: 3, status: 'fail' });
-    that(`toError.render('Raw')`,
-          toError.render('Raw')).toJson([
+    that().section('that().hasError()');
+    const hasError = new Expect();
+    that(`typeof hasError.that().hasError`,
+          typeof hasError.that().hasError).is('function');
+    that(`hasError.that('A', { error:'Expected Error' }).hasError('Expected Error')`,
+          hasError.that('A', { error:'Expected Error' }).hasError('Expected Error')).is(true);
+    that(`hasError.that('B', { error:'' }).hasError('')`,
+          hasError.that('B', { error:'' }).hasError('')).is(true);
+    that(`hasError.that('C', { error:123 }).hasError(123)`,
+          hasError.that('C', { error:123 }).hasError(123)).is(true);
+    that(`hasError.that('D', { error:'Expected Error' }).hasError({ error:'Nope!' })`,
+          hasError.that('D', { error:'Expected Error' }).hasError({ error:'Nope!' })).is(false);
+    that(`hasError.that('E', { error:'Expected Error' }).hasError(123)`,
+          hasError.that('E', { error:'Expected Error' }).hasError(123)).is(false);
+    that(`hasError.that('F', null).hasError('no error on a null') // null is (sorta) an object`,
+          hasError.that('F', null).hasError('no error on a null')).is(false);
+    that(`hasError.that('G').hasError()`,
+          hasError.that('G').hasError()).is(false);
+    that(`hasError`, hasError).has({ failTally: 4, passTally: 3, status: 'fail' });
+    that(`hasError.render('Raw')`,
+          hasError.render('Raw')).stringifiesTo([
               {
                   kind: 'SectionTitle',
                   sectionIndex: 0,
@@ -283,35 +283,35 @@ export function test(that, Expect) {
               },
           ]);
 
-    that().section('that().toHave()');
-    const toHave = new Expect();
-    that(`typeof toHave.that().toHave`,
-          typeof toHave.that().toHave).toBe('function');
-    that(`toHave.that('A', { a:1, b:null, c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] })`,
-          toHave.that('A', { a:1, b:null, c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] })).toBe(true);
-    that(`toHave.that('B', { a:1, b:null, c:[1,2,3] }).toHave({ c:[1,2,3] }) // ok this way...`,
-          toHave.that('B', { a:1, b:null, c:[1,2,3] }).toHave({ c:[1,2,3] })).toBe(true);
-    that(`toHave.that('C', { c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] }) // ...but not this way`,
-          toHave.that('C', { c:[1,2,3] }).toHave({ a:1, b:null, c:[1,2,3] })).toBe(false);
-    that(`toHave.that('D', { a:1, b:null, c:[1,2,3] }).toHave({}) // empty expected object`,
-          toHave.that('D', { a:1, b:null, c:[1,2,3] }).toHave({})).toBe(true);
-    that(`toHave.that('E', { a:1, b:null, c:[1,2,3] }).toHave(123) // expected is not an object`,
-          toHave.that('E', { a:1, b:null, c:[1,2,3] }).toHave(123)).toBe(true);
-    that(`toHave.that('F', 123).toHave({ a:1 }) // actually is not an object`,
-          toHave.that('F', 123).toHave({ a:1 })).toBe(false);
-    that(`toHave.that('G', { a:1, error:'Oh no!' }).toHave({ a:1 }) // matching a:1 is ignored`,
-          toHave.that('G', { a:1, error:'Oh no!' }).toHave({ a:1 })).toBe(false);
-    that(`toHave.that().section('Values differ')`,
-          toHave.that().section('Values differ')).toBe();
-    that(`toHave.that('H', { a:2, b:null, c:[1,2,3] }).toHave({ a:1 }) // a is different`,
-          toHave.that('H', { a:2, b:null, c:[1,2,3] }).toHave({ a:1 })).toBe(false);
-    that(`toHave.that('I', { a:1, b:undefined, c:[1,2,3] }).toHave({ a:1, b:null }) // undefined !== null`,
-          toHave.that('I', { a:1, b:undefined, c:[1,2,3] }).toHave({ a:1, b:null })).toBe(false);
-    that(`toHave.that('J', { a:1, b:null, c:[1,2,3] }).toHave({ c:[2,3,1] }) // c array-content is different`,
-          toHave.that('J', { a:1, b:null, c:[1,2,3] }).toHave({ c:[2,3,1] })).toBe(false);
-    that(`toHave`, toHave).toHave({ failTally: 6, passTally: 4, status: 'fail' });
-    that(`toHave.render('Raw')`,
-          toHave.render('Raw')).toJson([
+    that().section('that().has()');
+    const has = new Expect();
+    that(`typeof has.that().has`,
+          typeof has.that().has).is('function');
+    that(`has.that('A', { a:1, b:null, c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] })`,
+          has.that('A', { a:1, b:null, c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] })).is(true);
+    that(`has.that('B', { a:1, b:null, c:[1,2,3] }).has({ c:[1,2,3] }) // ok this way...`,
+          has.that('B', { a:1, b:null, c:[1,2,3] }).has({ c:[1,2,3] })).is(true);
+    that(`has.that('C', { c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] }) // ...but not this way`,
+          has.that('C', { c:[1,2,3] }).has({ a:1, b:null, c:[1,2,3] })).is(false);
+    that(`has.that('D', { a:1, b:null, c:[1,2,3] }).has({}) // empty expected object`,
+          has.that('D', { a:1, b:null, c:[1,2,3] }).has({})).is(true);
+    that(`has.that('E', { a:1, b:null, c:[1,2,3] }).has(123) // expected is not an object`,
+          has.that('E', { a:1, b:null, c:[1,2,3] }).has(123)).is(true);
+    that(`has.that('F', 123).has({ a:1 }) // actually is not an object`,
+          has.that('F', 123).has({ a:1 })).is(false);
+    that(`has.that('G', { a:1, error:'Oh no!' }).has({ a:1 }) // matching a:1 is ignored`,
+          has.that('G', { a:1, error:'Oh no!' }).has({ a:1 })).is(false);
+    that(`has.that().section('Values differ')`,
+          has.that().section('Values differ')).is();
+    that(`has.that('H', { a:2, b:null, c:[1,2,3] }).has({ a:1 }) // a is different`,
+          has.that('H', { a:2, b:null, c:[1,2,3] }).has({ a:1 })).is(false);
+    that(`has.that('I', { a:1, b:undefined, c:[1,2,3] }).has({ a:1, b:null }) // undefined !== null`,
+          has.that('I', { a:1, b:undefined, c:[1,2,3] }).has({ a:1, b:null })).is(false);
+    that(`has.that('J', { a:1, b:null, c:[1,2,3] }).has({ c:[2,3,1] }) // c array-content is different`,
+          has.that('J', { a:1, b:null, c:[1,2,3] }).has({ c:[2,3,1] })).is(false);
+    that(`has`, has).has({ failTally: 6, passTally: 4, status: 'fail' });
+    that(`has.render('Raw')`,
+          has.render('Raw')).stringifiesTo([
               {
                 kind: 'SectionTitle',
                 sectionIndex: 0,
@@ -367,35 +367,35 @@ export function test(that, Expect) {
               }
           ]);
 
-    that().section('that().toJson()');
-    const toJson = new Expect();
-    that(`typeof toJson.that().toJson`,
-          typeof toJson.that().toJson).toBe('function');
-    that(`toJson.that().section('Values the same')`,
-          toJson.that().section('Values the same')).toBe();
-    that(`toJson.that('A', { a:1, b:2 }).toJson({ a:1, b:2 })`,
-          toJson.that('A', { a:1, b:2 }).toJson({ a:1, b:2 })).toBe(true);
-    that(`toJson.that('B', { a:1, b:2 }).toJson({ b:2, a:1 }) // order matters`,
-          toJson.that('B', { a:1, b:2 }).toJson({ b:2, a:1 })).toBe(false);
-    that(`toJson.that('C', 'some text').toJson('some text')`,
-          toJson.that('C', 'some text').toJson('some text')).toBe(true);
-    that(`toJson.that('D').toJson()`,
-          toJson.that('D').toJson()).toBe(true);
-    that(`toJson.that('E', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], true, null])`,
-          toJson.that('E', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], true, null])).toBe(true);
-    that(`toHave.that().section('Values differ')`,
-          toHave.that().section('Values differ')).toBe();
-    that(`toJson.that('F', ['str', [1,2,3], true, null]).toJson(['nope', [1,2,3], true, null])`,
-          toJson.that('F', ['str', [1,2,3], true, null]).toJson(['nope', [1,2,3], true, null])).toBe(false);
-    that(`toJson.that('G', ['str', [1,2,3], true, null]).toJson(['str', [2,3,1], true, null])`,
-          toJson.that('G', ['str', [1,2,3], true, null]).toJson(['str', [2,3,1], true, null])).toBe(false);
-    that(`toJson.that('H', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false, null])`,
-          toJson.that('H', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false, null])).toBe(false);
-    that(`toJson.that('I', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false])`,
-          toJson.that('I', ['str', [1,2,3], true, null]).toJson(['str', [1,2,3], false])).toBe(false);
-    that(`toJson`, toJson).toHave({ failTally: 5, passTally: 4, status: 'fail' });
-    that(`toJson.render('Raw')`,
-          toJson.render('Raw')).toJson([
+    that().section('that().stringifiesTo()');
+    const stringifiesTo = new Expect();
+    that(`typeof stringifiesTo.that().stringifiesTo`,
+          typeof stringifiesTo.that().stringifiesTo).is('function');
+    that(`stringifiesTo.that().section('Values the same')`,
+          stringifiesTo.that().section('Values the same')).is();
+    that(`stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })`,
+          stringifiesTo.that('A', { a:1, b:2 }).stringifiesTo({ a:1, b:2 })).is(true);
+    that(`stringifiesTo.that('B', { a:1, b:2 }).stringifiesTo({ b:2, a:1 }) // order matters`,
+          stringifiesTo.that('B', { a:1, b:2 }).stringifiesTo({ b:2, a:1 })).is(false);
+    that(`stringifiesTo.that('C', 'some text').stringifiesTo('some text')`,
+          stringifiesTo.that('C', 'some text').stringifiesTo('some text')).is(true);
+    that(`stringifiesTo.that('D').stringifiesTo()`,
+          stringifiesTo.that('D').stringifiesTo()).is(true);
+    that(`stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])`,
+          stringifiesTo.that('E', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], true, null])).is(true);
+    that(`has.that().section('Values differ')`,
+          has.that().section('Values differ')).is();
+    that(`stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])`,
+          stringifiesTo.that('F', ['str', [1,2,3], true, null]).stringifiesTo(['nope', [1,2,3], true, null])).is(false);
+    that(`stringifiesTo.that('G', ['str', [1,2,3], true, null]).stringifiesTo(['str', [2,3,1], true, null])`,
+          stringifiesTo.that('G', ['str', [1,2,3], true, null]).stringifiesTo(['str', [2,3,1], true, null])).is(false);
+    that(`stringifiesTo.that('H', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false, null])`,
+          stringifiesTo.that('H', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false, null])).is(false);
+    that(`stringifiesTo.that('I', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false])`,
+          stringifiesTo.that('I', ['str', [1,2,3], true, null]).stringifiesTo(['str', [1,2,3], false])).is(false);
+    that(`stringifiesTo`, stringifiesTo).has({ failTally: 5, passTally: 4, status: 'fail' });
+    that(`stringifiesTo.render('Raw')`,
+          stringifiesTo.render('Raw')).stringifiesTo([
               {
                 kind: 'SectionTitle',
                 sectionIndex: 0,
@@ -442,25 +442,25 @@ export function test(that, Expect) {
               }
           ]);
 
-    that().section('that().toMatch()');
-    const toMatch = new Expect();
-    that(`typeof toMatch.that().toMatch`,
-          typeof toMatch.that().toMatch).toBe('function');
-    that(`toMatch.that('A', 'abc').toMatch(/^abc$/)`,
-          toMatch.that('A', 'abc').toMatch(/^abc$/)).toBe(true);
-    that(`toMatch.that('B', 'abc').toMatch(/^xyz$/)`,
-          toMatch.that('B', 'abc').toMatch(/^xyz$/)).toBe(false);
-    that(`toMatch.that('C', 'abc').toMatch({ test:s=>s=='abc' })`,
-          toMatch.that('C', 'abc').toMatch({ test:s=>s=='abc' })).toBe(true);
-    that(`toMatch.that('D', 'abc').toMatch({ test:s=>s=='xyz' })`,
-          toMatch.that('D', 'abc').toMatch({ test:s=>s=='xyz' })).toBe(false);
-    that(`toMatch.that('E').toMatch(/^abc$/)`,
-          toMatch.that('E').toMatch(/^abc$/)).toBe(false);
-    that(`toMatch.that('F', 'abc').toMatch()`,
-          toMatch.that('F', 'abc').toMatch()).toBe(false);
-    that(`toMatch`, toMatch).toHave({ failTally: 4, passTally: 2, status: 'fail' });
-    that(`toMatch.render('Raw')`,
-          toMatch.render('Raw')).toJson([
+    that().section('that().passes()');
+    const passes = new Expect();
+    that(`typeof passes.that().passes`,
+          typeof passes.that().passes).is('function');
+    that(`passes.that('A', 'abc').passes(/^abc$/)`,
+          passes.that('A', 'abc').passes(/^abc$/)).is(true);
+    that(`passes.that('B', 'abc').passes(/^xyz$/)`,
+          passes.that('B', 'abc').passes(/^xyz$/)).is(false);
+    that(`passes.that('C', 'abc').passes({ test:s=>s=='abc' })`,
+          passes.that('C', 'abc').passes({ test:s=>s=='abc' })).is(true);
+    that(`passes.that('D', 'abc').passes({ test:s=>s=='xyz' })`,
+          passes.that('D', 'abc').passes({ test:s=>s=='xyz' })).is(false);
+    that(`passes.that('E').passes(/^abc$/)`,
+          passes.that('E').passes(/^abc$/)).is(false);
+    that(`passes.that('F', 'abc').passes()`,
+          passes.that('F', 'abc').passes()).is(false);
+    that(`passes`, passes).has({ failTally: 4, passTally: 2, status: 'fail' });
+    that(`passes.render('Raw')`,
+          passes.render('Raw')).stringifiesTo([
               {
                   kind: 'SectionTitle',
                   sectionIndex: 0,

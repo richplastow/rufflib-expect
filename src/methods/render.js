@@ -257,42 +257,42 @@ function _renderRaw(log) { return log }
 
 // Tests expect.render().
 export function test(that, Expect) {
-    const testedExpect = new Expect('My Great Test Suite');
+    const expect = new Expect('My Great Test Suite');
 
     // Basics.
     that().section('render() basics and exceptions');
-    that(`typeof testedExpect.render`,
-          typeof testedExpect.render).toBe('function');
-    that(`typeof testedExpect.render('Ansi')`,
-          typeof testedExpect.render('Ansi')).toBe('string');
-    that(`typeof testedExpect.render('Html')`,
-          typeof testedExpect.render('Html')).toBe('string');
-    that(`typeof testedExpect.render('Json')`,
-          typeof testedExpect.render('Json')).toBe('string');
-    that(`typeof testedExpect.render('Plain')`,
-          typeof testedExpect.render('Plain')).toBe('string');
-    that(`typeof testedExpect.render('Raw')`,
-          typeof testedExpect.render('Raw')).toBe('object');
-    that(`Array.isArray(testedExpect.render('Raw'))`,
-          Array.isArray(testedExpect.render('Raw'))).toBe(true);
+    that(`typeof expect.render`,
+          typeof expect.render).is('function');
+    that(`typeof expect.render('Ansi')`,
+          typeof expect.render('Ansi')).is('string');
+    that(`typeof expect.render('Html')`,
+          typeof expect.render('Html')).is('string');
+    that(`typeof expect.render('Json')`,
+          typeof expect.render('Json')).is('string');
+    that(`typeof expect.render('Plain')`,
+          typeof expect.render('Plain')).is('string');
+    that(`typeof expect.render('Raw')`,
+          typeof expect.render('Raw')).is('object');
+    that(`Array.isArray(expect.render('Raw'))`,
+          Array.isArray(expect.render('Raw'))).is(true);
 
     // Incorrect arguments should throw exceptions.
     let exc;
     const OK = 'Did not encounter an exception';
-    try {   testedExpect.render(123); exc = OK } catch (e) { exc = `${e}` }
-    that(`testedExpect.render(123)`, exc)
-        .toBe(`Error: expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
+    try {   expect.render(123); exc = OK } catch (e) { exc = `${e}` }
+    that(`expect.render(123)`, exc)
+        .is(`Error: expect.render(): unexpected format, try 'Ansi|Html|Json|Plain|Raw'`);
 
     // Before any tests have been specified.
     that().section('render() with no tests');
-    that(`testedExpect.render('Ansi')`,
-          testedExpect.render('Ansi')).toMatch(
+    that(`expect.render('Ansi')`,
+          expect.render('Ansi')).passes(
           /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 0 tests\n-{79}\n$/);
-    that(`testedExpect.render('Html')`,
-          testedExpect.render('Html')).toBe(
+    that(`expect.render('Html')`,
+          expect.render('Html')).is(
           '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 0 tests\n<hr>\n');
-    that(`testedExpect.render('Json')`,
-          testedExpect.render('Json')).toBe([
+    that(`expect.render('Json')`,
+          expect.render('Json')).is([
               '{',
               '  "fail_tally": 0,',
               '  "pass_tally": 0,',
@@ -303,32 +303,32 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Plain')`,
-          testedExpect.render('Plain')).toMatch(
+    that(`expect.render('Plain')`,
+          expect.render('Plain')).passes(
           /^-{79}\nMy Great Test Suite\n={19}\nPassed 0 tests\n-{79}\n$/);
-    that(`testedExpect.render('Raw')`,
-          testedExpect.render('Raw')).toJson([]);
+    that(`expect.render('Raw')`,
+          expect.render('Raw')).stringifiesTo([]);
 
     // One passing test, in a defaultly-named section.
     that().section('render() with tests');
-    that(`testedExpect.that('A', 1).toBe(1) // same test as in 'that().toBe()'`,
-          testedExpect.that('A', 1).toBe(1)).toBe(true);
-    that(`testedExpect.render('Ansi')`,
-          testedExpect.render('Ansi')).toMatch(
+    that(`expect.that('A', 1).is(1) // same test as in 'that().is()'`,
+          expect.that('A', 1).is(1)).is(true);
+    that(`expect.render('Ansi')`,
+          expect.render('Ansi')).passes(
           /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n\u001b\[32m√ Passed\u001b\[0m 1 test\n-{79}\n$/);
-    that(`testedExpect.render('Ansi', '', true)`,
-          testedExpect.render('Ansi', '', true)).toMatch(
+    that(`expect.render('Ansi', '', true)`,
+          expect.render('Ansi', '', true)).passes(
           /-{79}\n\n\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n\u001b\[32m√ Passed\u001b\[0m A\n\n\n-{79}\n/);
-    that(`testedExpect.render('Html')`,
-          testedExpect.render('Html')).toBe(
+    that(`expect.render('Html')`,
+          expect.render('Html')).is(
           '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
-    that(`testedExpect.render('Html', '', true)`,
-          testedExpect.render('Html', '', true)).toBe(
+    that(`expect.render('Html', '', true)`,
+          expect.render('Html', '', true)).is(
           '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n' +
           '\n<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n' +
           '<hr><h2>My Great Test Suite</h2>\n<i>√ Passed</i> 1 test\n<hr>\n');
-    that(`testedExpect.render('Json')`,
-          testedExpect.render('Json')).toBe([
+    that(`expect.render('Json')`,
+          expect.render('Json')).is([
               '{',
               '  "fail_tally": 0,',
               '  "pass_tally": 1,',
@@ -339,8 +339,8 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Json', '', true)`,
-          testedExpect.render('Json', '', true)).toBe([
+    that(`expect.render('Json', '', true)`,
+          expect.render('Json', '', true)).is([
               '{',
               '  "fail_tally": 0,',
               '  "pass_tally": 1,',
@@ -352,11 +352,11 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Plain')`,
-          testedExpect.render('Plain')).toMatch(
+    that(`expect.render('Plain')`,
+          expect.render('Plain')).passes(
               /^-{79}\nMy Great Test Suite\n={19}\nPassed 1 test\n-{79}\n$/);
-    that(`testedExpect.render('Plain', '', true)`,
-          testedExpect.render('Plain', '', true)).toMatch(
+    that(`expect.render('Plain', '', true)`,
+          expect.render('Plain', '', true)).passes(
               /-{79}\n\nUntitled Section:\n-{17}\nPassed A\n\n\n-{79}\n/);
     const rawResultOneTest = [
         {
@@ -366,25 +366,25 @@ export function test(that, Expect) {
         },
         { kind: 'Passed', sectionIndex: 0, testTitle: 'A' }
     ];
-    that(`testedExpect.render('Raw')`,
-          testedExpect.render('Raw')).toJson(rawResultOneTest);
-    that(`testedExpect.render('Raw', '', true)`,
-          testedExpect.render('Raw', '', true)).toJson(rawResultOneTest);
+    that(`expect.render('Raw')`,
+          expect.render('Raw')).stringifiesTo(rawResultOneTest);
+    that(`expect.render('Raw', '', true)`,
+          expect.render('Raw', '', true)).stringifiesTo(rawResultOneTest);
 
     // Add three failing tests and a passing test, in a custom-named section.
-    that(`testedExpect.that().section('Second Section')`,
-          testedExpect.that().section('Second Section')).toBe(undefined);
-    that(`testedExpect.that('B', 1).toBe(0)`,
-          testedExpect.that('B', 1).toBe(0)).toBe(false);
-    that(`testedExpect.that('C', 1).toBe(1)`,
-          testedExpect.that('C', 1).toBe(1)).toBe(true);
-    that(`testedExpect.that('D', {error:'Actual Error'}).toError('Expected Error')`,
-          testedExpect.that('D', {error:'Actual Error'}).toError('Expected Error')).toBe(false);
-    that(`testedExpect.that('E', {error:'Unexpectedly Error'}).toHave({a:1})`,
-          testedExpect.that('E', {error:'Unexpectedly Error'}).toHave({a:1})).toBe(false);
+    that(`expect.that().section('Second Section')`,
+          expect.that().section('Second Section')).is(undefined);
+    that(`expect.that('B', 1).is(0)`,
+          expect.that('B', 1).is(0)).is(false);
+    that(`expect.that('C', 1).is(1)`,
+          expect.that('C', 1).is(1)).is(true);
+    that(`expect.that('D', {error:'Actual Error'}).hasError('Expected Error')`,
+          expect.that('D', {error:'Actual Error'}).hasError('Expected Error')).is(false);
+    that(`expect.that('E', {error:'Unexpectedly Error'}).has({a:1})`,
+          expect.that('E', {error:'Unexpectedly Error'}).has({a:1})).is(false);
 
-    that(`testedExpect.render('Ansi')`,
-          testedExpect.render('Ansi')).toMatch(new RegExp([
+    that(`expect.render('Ansi')`,
+          expect.render('Ansi')).passes(new RegExp([
               /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/,
               /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/,
@@ -398,8 +398,8 @@ export function test(that, Expect) {
               /  \u001b\[2mactually is an error:\u001b\[0m\n/,
               /  Unexpectedly Error\n$/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Ansi', 'untitled', true)`,
-          testedExpect.render('Ansi', 'untitled', true)).toMatch(new RegExp([
+    that(`expect.render('Ansi', 'untitled', true)`,
+          expect.render('Ansi', 'untitled', true)).passes(new RegExp([
               /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/,
               /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/,
@@ -407,8 +407,8 @@ export function test(that, Expect) {
               /\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n$/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Ansi', 'second', true)`,
-          testedExpect.render('Ansi', 'second', true)).toMatch(new RegExp([
+    that(`expect.render('Ansi', 'second', true)`,
+          expect.render('Ansi', 'second', true)).passes(new RegExp([
               /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/,
               /\u001b\[1mSecond Section:\u001b\[0m\n-{15}\n/,
@@ -425,8 +425,8 @@ export function test(that, Expect) {
               /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Ansi', '', true)`,
-          testedExpect.render('Ansi', '', true)).toMatch(new RegExp([
+    that(`expect.render('Ansi', '', true)`,
+          expect.render('Ansi', '', true)).passes(new RegExp([
               /^-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}\n\n/,
               /\u001b\[1mUntitled Section:\u001b\[0m\n-{17}\n/,
@@ -445,21 +445,21 @@ export function test(that, Expect) {
               /-{79}\n\u001b\[1mMy Great Test Suite\u001b\[0m\n={19}\n/,
               /\u001b\[31mX Failed\u001b\[0m 3 of 5\n-{79}/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Html')`,
-          testedExpect.render('Html')).toBe(
+    that(`expect.render('Html')`,
+          expect.render('Html')).is(
               '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n'
             + '<b>Second Section:</b>\n'
             + '<u>X Failed</u> B:\n  <s>expected:</s> 0\n  <s>actually:</s> 1\n'
             + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n'
             + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n'
           );
-    that(`testedExpect.render('Html', 'untitled', true)`,
-          testedExpect.render('Html', 'untitled', true)).toBe(
+    that(`expect.render('Html', 'untitled', true)`,
+          expect.render('Html', 'untitled', true)).is(
               '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n'
             + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n\n'
             + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that(`testedExpect.render('Html', 'second', true)`,
-          testedExpect.render('Html', 'second', true)).toBe(
+    that(`expect.render('Html', 'second', true)`,
+          expect.render('Html', 'second', true)).is(
               '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n'
             + '<b>Second Section:</b>\n<u>X Failed</u> B:\n'
             + '  <s>expected:</s> 0\n  <s>actually:</s> 1\n'
@@ -467,8 +467,8 @@ export function test(that, Expect) {
             + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n'
             + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n'
             + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that(`testedExpect.render('Html', '', true)`,
-          testedExpect.render('Html', '', true)).toBe(
+    that(`expect.render('Html', '', true)`,
+          expect.render('Html', '', true)).is(
               '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n\n'
             + '<b>Untitled Section:</b>\n<i>√ Passed</i> A\n\n'
             + '<b>Second Section:</b>\n<u>X Failed</u> B:\n'
@@ -477,8 +477,8 @@ export function test(that, Expect) {
             + '<u>X Failed</u> D:\n  <s>expected:</s> Expected Error\n  <s>actually:</s> Actual Error\n'
             + '<u>X Failed</u> E:\n  <s>actually is an error:</s>\n  Unexpectedly Error\n\n\n'
             + '<hr><h2>My Great Test Suite</h2>\n<u>X Failed</u> 3 of 5\n<hr>\n');
-    that(`testedExpect.render('Json')`,
-          testedExpect.render('Json')).toBe([
+    that(`expect.render('Json')`,
+          expect.render('Json')).is([
               '{',
               '  "fail_tally": 3,',
               '  "pass_tally": 2,',
@@ -497,8 +497,8 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Json', 'untitled', true)`,
-          testedExpect.render('Json', 'untitled', true)).toBe([
+    that(`expect.render('Json', 'untitled', true)`,
+          expect.render('Json', 'untitled', true)).is([
               '{',
               '  "fail_tally": 3,',
               '  "pass_tally": 2,',
@@ -510,8 +510,8 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Json', 'second', true)`,
-          testedExpect.render('Json', 'second', true)).toBe([
+    that(`expect.render('Json', 'second', true)`,
+          expect.render('Json', 'second', true)).is([
               '{',
               '  "fail_tally": 3,',
               '  "pass_tally": 2,',
@@ -531,8 +531,8 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Json', '', true)`,
-          testedExpect.render('Json', '', true)).toBe([
+    that(`expect.render('Json', '', true)`,
+          expect.render('Json', '', true)).is([
               '{',
               '  "fail_tally": 3,',
               '  "pass_tally": 2,',
@@ -554,8 +554,8 @@ export function test(that, Expect) {
               '  ]',
               '}',
           ].join('\n'));
-    that(`testedExpect.render('Plain')`,
-          testedExpect.render('Plain')).toMatch(new RegExp([
+    that(`expect.render('Plain')`,
+          expect.render('Plain')).passes(new RegExp([
               /^-{79}\nMy Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}\n\n/,
               /Second Section:\n-{15}\n/,
@@ -569,8 +569,8 @@ export function test(that, Expect) {
               /  actually is an error:\n/,
               /  Unexpectedly Error/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Plain', 'untitled', true)`,
-          testedExpect.render('Plain', 'untitled', true)).toMatch(new RegExp([
+    that(`expect.render('Plain', 'untitled', true)`,
+          expect.render('Plain', 'untitled', true)).passes(new RegExp([
               /^-{79}\nMy Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}\n\n/,
               /Untitled Section:\n-{17}\n/,
@@ -578,8 +578,8 @@ export function test(that, Expect) {
               /My Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}\n$/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Plain', 'second', true)`,
-          testedExpect.render('Plain', 'second', true)).toMatch(new RegExp([
+    that(`expect.render('Plain', 'second', true)`,
+          expect.render('Plain', 'second', true)).passes(new RegExp([
               /^-{79}\nMy Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}\n\n/,
               /Second Section:\n-{15}\n/,
@@ -596,8 +596,8 @@ export function test(that, Expect) {
               /-{79}\nMy Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}/,
           ].map(r=>r.source).join('')));
-    that(`testedExpect.render('Plain', '', true)`,
-          testedExpect.render('Plain', '', true)).toMatch(new RegExp([
+    that(`expect.render('Plain', '', true)`,
+          expect.render('Plain', '', true)).passes(new RegExp([
               /^-{79}\nMy Great Test Suite\n={19}\n/,
               /Failed 3 of 5\n-{79}\n\n/,
               /Untitled Section:\n-{17}\n/,
@@ -651,13 +651,13 @@ export function test(that, Expect) {
           testTitle: 'E'
         }  
     ];
-    that(`testedExpect.render('Raw')`,
-          testedExpect.render('Raw')).toJson(rawResultFourTests);
-    that(`testedExpect.render('Raw', 'untitled', true)`,
-          testedExpect.render('Raw', 'untitled', true)).toJson(rawResultFourTests);
-    that(`testedExpect.render('Raw', 'second', true)`,
-          testedExpect.render('Raw', 'second', true)).toJson(rawResultFourTests);
-    that(`testedExpect.render('Raw', '', true)`,
-          testedExpect.render('Raw', '', true)).toJson(rawResultFourTests);
+    that(`expect.render('Raw')`,
+          expect.render('Raw')).stringifiesTo(rawResultFourTests);
+    that(`expect.render('Raw', 'untitled', true)`,
+          expect.render('Raw', 'untitled', true)).stringifiesTo(rawResultFourTests);
+    that(`expect.render('Raw', 'second', true)`,
+          expect.render('Raw', 'second', true)).stringifiesTo(rawResultFourTests);
+    that(`expect.render('Raw', '', true)`,
+          expect.render('Raw', '', true)).stringifiesTo(rawResultFourTests);
 
 }

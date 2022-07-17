@@ -47,8 +47,8 @@ export default class Expect {
         this.log = [];
         this.sections = [];
 
-        // No tests have run, so no failures and no passes.
-        // So technically, the test suite status is currently ‘pass’.
+        // No tests have run, so no tests failed and no tests passed.
+        // Technically, the test suite status is currently ‘pass’.
         this.failTally = 0;
         this.passTally = 0;
         this.status = 'pass';
@@ -66,13 +66,13 @@ Expect.prototype.render = render;
 export function test(that, Expect) {
     that().section('Expect basics');
     that(`typeof Expect // in JavaScript, a class is type 'function'`,
-          typeof Expect).toBe('function');
+          typeof Expect).is('function');
     that(`Expect.VERSION`,
-          Expect.VERSION).toBe(VERSION);
+          Expect.VERSION).is(VERSION);
     that(`typeof new Expect()`,
-          typeof new Expect()).toBe('object');
+          typeof new Expect()).is('object');
     that(`new Expect()`,
-          new Expect()).toHave({
+          new Expect()).has({
               failTally: 0,
               passTally: 0,
               status: 'pass',
@@ -87,30 +87,30 @@ export function test(that, Expect) {
         return n;
     }
     that(`factorialise(5) // 5! = 5 * 4 * 3 * 2 * 1`,
-          factorialise(5)).toBe(120);
+          factorialise(5)).is(120);
 
-    const mathsy = new Expect('Mathsy Test Suite');
-    that(`mathsy.that('factorialise(5)', factorialise(5)).toBe(120)`,
-          mathsy.that('factorialise(5)', factorialise(5)).toBe(120)).toBe(true);
-    that(`mathsy`, mathsy).toHave({ failTally: 0, passTally: 1, status: 'pass' });
-    that(`mathsy.that('factorialise(3)', factorialise(3)).toBe(77)`,
-          mathsy.that('factorialise(3)', factorialise(3)).toBe(77)).toBe(false);
-    that(`mathsy`, mathsy).toHave({ failTally: 1, passTally: 1, status: 'fail' });
-    that(`mathsy.render()`,
-          mathsy.render()).toMatch(/Mathsy Test Suite\n={17}\nFailed 1 of 2\n/);
-    that(`mathsy.render()`,
-          mathsy.render()).toMatch(/Untitled Section:\n-{17}\n/);
-    that(`mathsy.render()`,
-          mathsy.render()).toMatch(/Failed factorialise\(3\):\s+expected: 77\s+actually: 6/);
+    const expect = new Expect('Mathsy Test Suite');
+    that(`expect.that('factorialise(5)', factorialise(5)).is(120)`,
+          expect.that('factorialise(5)', factorialise(5)).is(120)).is(true);
+    that(`expect`, expect).has({ failTally: 0, passTally: 1, status: 'pass' });
+    that(`expect.that('factorialise(3)', factorialise(3)).is(77)`,
+          expect.that('factorialise(3)', factorialise(3)).is(77)).is(false);
+    that(`expect`, expect).has({ failTally: 1, passTally: 1, status: 'fail' });
+    that(`expect.render()`,
+          expect.render()).passes(/Mathsy Test Suite\n={17}\nFailed 1 of 2\n/);
+    that(`expect.render()`,
+          expect.render()).passes(/Untitled Section:\n-{17}\n/);
+    that(`expect.render()`,
+          expect.render()).passes(/Failed factorialise\(3\):\s+expected: 77\s+actually: 6/);
 
 
     that().section('reset()');
-    that(`typeof mathsy.reset`,
-          typeof mathsy.reset).toBe('function');
-    that(`mathsy.reset()`,
-          mathsy.reset()).toBe(undefined);
-    that(`mathsy`, mathsy).toHave({ failTally: 0, passTally: 0, status: 'pass' });
-    that(`mathsy.render()`,
-          mathsy.render()).toMatch(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
+    that(`typeof expect.reset`,
+          typeof expect.reset).is('function');
+    that(`expect.reset()`,
+          expect.reset()).is(undefined);
+    that(`expect`, expect).has({ failTally: 0, passTally: 0, status: 'pass' });
+    that(`expect.render()`,
+          expect.render()).passes(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
 
 }

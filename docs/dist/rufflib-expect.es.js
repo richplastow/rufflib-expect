@@ -371,7 +371,7 @@ function that(
         },
 
         // Tests that `actually` and `expected` are strictly equal.
-        toBe(expected) {
+        is(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually === expected) {
                 log.push({
@@ -393,7 +393,7 @@ function that(
 
         // Tests that `actually` is an object with an expected `error` property.
         // @TODO allow `expected` to be a regexp, or other object with a `test()` method
-        toError(expected) {
+        hasError(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually && actually?.error === expected) {
                 log.push({
@@ -414,7 +414,7 @@ function that(
         },
 
         // Tests that `actually` contains all of the keys and values in `expected`.
-        toHave(expected) {
+        has(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (actually.error) {
                 log.push({
@@ -449,7 +449,7 @@ function that(
         },
 
         // Tests that `actually` and `expected` are identical when stringified to JSON.
-        toJson(expected) {
+        stringifiesTo(expected) {
             if (! sections.length) this.section(); // there must be a section
             const aJson = JSON.stringify(actually);
             const eJson = JSON.stringify(expected);
@@ -473,7 +473,7 @@ function that(
 
         // Tests that `actually` passes the test defined by `expected`.
         // Typically used for regular expression tests.
-        toMatch(expected) {
+        passes(expected) {
             if (! sections.length) this.section(); // there must be a section
             if (expected && expected?.test(actually)) {
                 log.push({
@@ -540,8 +540,8 @@ class Expect {
         this.log = [];
         this.sections = [];
 
-        // No tests have run, so no failures and no passes.
-        // So technically, the test suite status is currently ‘pass’.
+        // No tests have run, so no tests failed and no tests passed.
+        // Technically, the test suite status is currently ‘pass’.
         this.failTally = 0;
         this.passTally = 0;
         this.status = 'pass';
