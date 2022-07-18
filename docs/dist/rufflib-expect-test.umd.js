@@ -15,7 +15,7 @@
   }
 
   /**
-   * Unit tests for rufflib-expect 2.0.0
+   * Unit tests for rufflib-expect 2.0.1
    * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
    * https://richplastow.com/rufflib-expect
    * @license MIT
@@ -660,19 +660,19 @@
   // Tests Expect.section().
 
 
-  function test$1(tt, Expect) {
-    tt().section('section()');
+  function test$1(et, Expect) {
+    et().section('section()');
     var expect = new Expect();
-    tt("typeof expect.section", _typeof(expect.section)).is('function');
-    tt("typeof expect.section('FooBar Section')", _typeof(expect.section('FooBar Section'))).is('undefined');
-    tt("expect.render(undefined, '', true)", expect.render(undefined, '', true)).passes(/FooBar Section/);
+    et("typeof expect.section", _typeof(expect.section)).is('function');
+    et("typeof expect.section('FooBar Section')", _typeof(expect.section('FooBar Section'))).is('undefined');
+    et("expect.render(undefined, '', true)", expect.render(undefined, '', true)).passes(/FooBar Section/);
   } // rufflib-expect/src/expect.js
   // Assembles the `Expect` class.
 
   /* --------------------------------- Import --------------------------------- */
 
 
-  var VERSION = '2.0.0';
+  var VERSION = '2.0.1';
   /* ---------------------------------- Tests --------------------------------- */
   // Runs basic Expect tests on itself.
 

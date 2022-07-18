@@ -18,15 +18,15 @@ export default function section(
 /* ---------------------------------- Tests --------------------------------- */
 
 // Tests Expect.section().
-export function test(tt, Expect) {
+export function test(et, Expect) {
 
-    tt().section('section()');
+    et().section('section()');
     const expect = new Expect();
-    tt(`typeof expect.section`,
+    et(`typeof expect.section`,
         typeof expect.section).is('function');
-    tt(`typeof expect.section('FooBar Section')`,
+    et(`typeof expect.section('FooBar Section')`,
         typeof expect.section('FooBar Section')).is('undefined');
-    tt(`expect.render(undefined, '', true)`,
+    et(`expect.render(undefined, '', true)`,
         expect.render(undefined, '', true)).passes(/FooBar Section/);
 
 }

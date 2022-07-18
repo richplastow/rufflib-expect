@@ -1,5 +1,5 @@
 /**
- * Unit tests for rufflib-expect 2.0.0
+ * Unit tests for rufflib-expect 2.0.1
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -822,15 +822,15 @@ function test$2(that, Expect) {
 /* ---------------------------------- Tests --------------------------------- */
 
 // Tests Expect.section().
-function test$1(tt, Expect) {
+function test$1(et, Expect) {
 
-    tt().section('section()');
+    et().section('section()');
     const expect = new Expect();
-    tt(`typeof expect.section`,
+    et(`typeof expect.section`,
         typeof expect.section).is('function');
-    tt(`typeof expect.section('FooBar Section')`,
+    et(`typeof expect.section('FooBar Section')`,
         typeof expect.section('FooBar Section')).is('undefined');
-    tt(`expect.render(undefined, '', true)`,
+    et(`expect.render(undefined, '', true)`,
         expect.render(undefined, '', true)).passes(/FooBar Section/);
 
 }
@@ -842,7 +842,7 @@ function test$1(tt, Expect) {
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '2.0.0';
+const VERSION = '2.0.1';
 
 
 /* ---------------------------------- Tests --------------------------------- */

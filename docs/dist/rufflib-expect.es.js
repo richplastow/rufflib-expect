@@ -1,5 +1,5 @@
 /**
- * rufflib-expect 2.0.0
+ * rufflib-expect 2.0.1
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -518,7 +518,7 @@ function section(
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '2.0.0';
+const VERSION = '2.0.1';
 
 
 /* ---------------------------------- Class --------------------------------- */
