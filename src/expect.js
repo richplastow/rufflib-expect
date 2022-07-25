@@ -5,7 +5,8 @@
 
 /* --------------------------------- Import --------------------------------- */
 
-const VERSION = '2.0.1';
+const NAME = 'Expect';
+const VERSION = '3.0.0';
 
 import generateCss from './methods/generate-css.js';
 import render from './methods/render.js';
@@ -35,6 +36,8 @@ import section from './methods/section.js';
 //     }
 //
 export default class Expect {
+    static name = NAME; // make sure minification doesn’t squash the `name` property
+    static VERSION = VERSION;
 
     constructor(suiteTitle='Untitled Test Suite') {
         this.that = that.bind(this);
@@ -69,7 +72,9 @@ export function test(that, Expect) {
     that().section('Expect basics');
     that(`typeof Expect // in JavaScript, a class is type 'function'`,
           typeof Expect).is('function');
-    that(`Expect.VERSION`,
+    that(`Expect.name // minification should not squash '${NAME}'`,
+          Expect.name).is(NAME);
+    that(`Expect.VERSION // make sure we are testing ${VERSION}`,
           Expect.VERSION).is(VERSION);
     that(`typeof new Expect()`,
           typeof new Expect()).is('object');

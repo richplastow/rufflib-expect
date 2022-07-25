@@ -6,3 +6,6 @@ adds usage example to homepage
 
 20220716^RP 2.0.0
 renames some methods (breaking change)
+
+20220725^RP 3.0.0
+moves dist files and slims NPM package (breaking change)

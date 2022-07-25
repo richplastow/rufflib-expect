@@ -1,11 +1,12 @@
 {
     "name": "rufflib-expect",
-    "version": "2.0.1",
+    "version": "3.0.0",
     "description": "A RuffLIB library for unit testing rough and sketchy JavaScript apps.",
-    "main": "docs/dist/rufflib-expect.es.js",
+    "main": "dist/rufflib-expect.es.js",
     "type": "module",
     "scripts": {
-        "build": "rollup -c",
+        "build": "npm run clean && rollup -c && mkdir docs/dist && cp dist/* docs/dist",
+        "clean": "rm -r dist; rm -r docs/dist; rm -r docs/test",
         "test:docs": "node docs/run-nodejs-tests.js # test docs/ using NodeJS",
         "test:src": "node src/run-nodejs-tests.js # test src/ using NodeJS",
         "test": "[ -z $npm_config_src ]&&D=docs||D=src;npm run test:$D"

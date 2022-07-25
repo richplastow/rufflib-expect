@@ -3,7 +3,7 @@
 /* ----------------------------- Imports and Env ---------------------------- */
 
 import Expect from './dist/rufflib-expect.es.js';
-import expectTest from './dist/rufflib-expect-test.es.js';
+import expectTest from './test/rufflib-expect-test.es.js';
 
 // `npm test --full` means we should show full test results.
 const showFullResults = !! process.env.npm_config_full;

@@ -15,7 +15,7 @@
   }
 
   /**
-   * Unit tests for rufflib-expect 2.0.1
+   * Unit tests for rufflib-expect 3.0.0
    * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
    * https://richplastow.com/rufflib-expect
    * @license MIT
@@ -672,14 +672,16 @@
   /* --------------------------------- Import --------------------------------- */
 
 
-  var VERSION = '2.0.1';
+  var NAME = 'Expect';
+  var VERSION = '3.0.0';
   /* ---------------------------------- Tests --------------------------------- */
   // Runs basic Expect tests on itself.
 
   function test(that, Expect) {
     that().section('Expect basics');
     that("typeof Expect // in JavaScript, a class is type 'function'", _typeof(Expect)).is('function');
-    that("Expect.VERSION", Expect.VERSION).is(VERSION);
+    that("Expect.name // minification should not squash '".concat(NAME, "'"), Expect.name).is(NAME);
+    that("Expect.VERSION // make sure we are testing ".concat(VERSION), Expect.VERSION).is(VERSION);
     that("typeof new Expect()", _typeof(new Expect())).is('object');
     that("new Expect()", new Expect()).has({
       failTally: 0,

@@ -2,7 +2,7 @@
 
 __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 
-▶&nbsp; __Version:__ 2.0.1  
+▶&nbsp; __Version:__ 3.0.0  
 ▶&nbsp; __Homepage:__ <https://richplastow.com/rufflib-expect>  
 ▶&nbsp; __NPM:__ <https://www.npmjs.com/package/rufflib-expect>  
 ▶&nbsp; __Repo:__ <https://github.com/richplastow/rufflib-expect>  
@@ -35,7 +35,7 @@ Run the test suite in ‘src/’, while working on this library:
 `npm test --src`  
 `npm start --src --open --test`  
 
-Build the minified and unminified bundles, using settings in rollup.config.js:  
+Build the minified and unminified bundles in ‘dist/’ and ‘docs/’:  
 `npm run build`
 
 Run the test suite in ‘docs/’, after a build:  
