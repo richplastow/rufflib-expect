@@ -1,6 +1,6 @@
 {
     "name": "rufflib-expect",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "A RuffLIB library for unit testing rough and sketchy JavaScript apps.",
     "main": "dist/rufflib-expect.es.js",
     "type": "module",

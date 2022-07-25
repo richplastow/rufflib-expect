@@ -1,3 +1,4 @@
+.browserslistrc
 .DS_Store
 .vscode
 babel.config.json

@@ -6,7 +6,7 @@
 /* --------------------------------- Import --------------------------------- */
 
 const NAME = 'Expect';
-const VERSION = '3.0.0';
+const VERSION = '3.0.1';
 
 import generateCss from './methods/generate-css.js';
 import render from './methods/render.js';
