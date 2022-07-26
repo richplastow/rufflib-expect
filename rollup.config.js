@@ -1,7 +1,6 @@
 // Configuration, used by `rollup -c` during `npm run build`.
 
-import { homepage, description, license, name, version }
-    from './package.json';
+import { homepage, description, license, name, version } from './package.json';
 import { babel } from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
@@ -20,14 +19,14 @@ export default [
         output: {
             banner,
             file: 'dist/rufflib-expect.es.js', // a copy of this is used by...
-            format: 'es', // ...`docs/run-nodejs-tests.js`
+            format: 'es', // ...`docs/test/run-nodejs-tests.js`
         }
     },
     {
         input: 'dist/rufflib-expect.es.js',
         output: {
             file: 'dist/rufflib-expect.umd.es5.min.js', // a copy of this is used by...
-            format: 'umd', // ...`docs/run-browser-tests.html`
+            format: 'umd', // ...`docs/test/run-browser-tests.html`
             name: 'rufflib.expect.main', // `var Expect = rufflib.expect.main`
         },
         // See https://babeljs.io/docs/en/babel-preset-env
@@ -44,20 +43,18 @@ export default [
         output: {
             banner: banner.replace(' * ', ' * Unit tests for '),
             file: 'docs/test/rufflib-expect-test.es.js', // this is used by...
-            format: 'es', // ...`docs/run-nodejs-tests.js`
+            format: 'es', // ...`docs/test/run-nodejs-tests.js`
         }
     },
     {
         input: 'docs/test/rufflib-expect-test.es.js',
         output: {
             file: 'docs/test/rufflib-expect-test.umd.js', // this is used by...
-            format: 'umd', // ...`docs/run-browser-tests.html` in legacy browsers
-            name: 'rufflib.expect.test' // `rufflib.expect.test(expect, Expect)`
+            format: 'umd', // ...`docs/test/run-browser-tests.html` in legacy browsers
+            name: 'rufflib.expect.test' // `rufflib.expect.test(expect.that, Expect)`
         },
         // See https://babeljs.io/docs/en/babel-preset-env
-        plugins: [
-            babel({ babelHelpers: 'bundled' }),
-        ]
+        plugins: [babel({ babelHelpers: 'bundled' })]
     }
 
 ];

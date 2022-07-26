@@ -1,9 +1,9 @@
-// rufflib-expect/docs/run-nodejs-tests.js
+// rufflib-expect/src/docs/test/run-nodejs-tests.js
 
 /* ----------------------------- Imports and Env ---------------------------- */
 
-import Expect from './dist/rufflib-expect.es.js';
-import expectTest from './test/rufflib-expect-test.es.js';
+import Expect from '../../main.js';
+import expectTest from '../../main-test.js';
 
 // `npm test --full` means we should show full test results.
 const showFullResults = !! process.env.npm_config_full;
@@ -19,14 +19,14 @@ if (Expect.VERSION !== process.env.npm_package_version) throw Error(
     `Expect.VERSION '${Expect.VERSION}' !== package.json version`);
 
 // Run the test suite.
-const expect = new Expect('Expect Test Suite (dist, NodeJS)');
+const expect = new Expect('Expect Test Suite (src, NodeJS)');
 expectTest(expect.that, Expect);
 
 // Display the results.
 console.log(expect.render('Ansi', sectionMustContain, showFullResults));
 
 // Display handy hints.
-console.log(`Hint: use '--src' to run tests in src/`);
+console.log(`Hint: omit '--src' to run tests in docs/`);
 console.log(`Hint: ${showFullResults ? 'omit' : 'use'} '--full' to ${
     showFullResults ? 'hide' : 'show'} full test results`);
 console.log(`Hint: ${sectionMustContain ? 'omit' : 'use'} '--section=${

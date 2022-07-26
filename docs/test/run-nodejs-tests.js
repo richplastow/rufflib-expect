@@ -1,9 +1,9 @@
-// rufflib-expect/src/run-nodejs-tests.js
+// rufflib-expect/src/docs/test/run-nodejs-tests.js
 
 /* ----------------------------- Imports and Env ---------------------------- */
 
-import Expect from './main.js';
-import expectTest from './main-test.js';
+import Expect from '../../main.js';
+import expectTest from '../../main-test.js';
 
 // `npm test --full` means we should show full test results.
 const showFullResults = !! process.env.npm_config_full;

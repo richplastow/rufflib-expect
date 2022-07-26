@@ -1,12 +1,13 @@
-// server.js
+// rufflib-expect/server.js
 
-// A simple static server, handy for development and testing.
+// A specialised server, designed for developing and testing RuffLIB Expect.
 
 /* --------------------------------- Imports -------------------------------- */
 
 import child_process from 'child_process';
 import fs from 'fs';
 import http from 'node:http';
+import { Transform } from 'stream';
 
 
 /* -------------------------------- Constants ------------------------------- */
@@ -20,8 +21,8 @@ const port = 4321;
 // `npm start --open` or `npm start -o` means we should open a browser window.
 const doOpen = process.env.npm_config_open || process.env.npm_config_o;
 
-// `npm start --src` means we should use the src/ folder, not docs/.
-const dir = process.env.npm_config_src ? 'src' : 'docs';
+// `npm start --src` means we should use the 'src/docs/' folder, not 'docs/'.
+const dir = process.env.npm_config_src ? 'src/docs' : 'docs';
 
 // `npm start --test` or `npm start -t` opens run-browser-tests.html not index.html.
 const doTest = process.env.npm_config_test || process.env.npm_config_t;
@@ -29,20 +30,54 @@ const doTest = process.env.npm_config_test || process.env.npm_config_t;
 
 /* --------------------------------- Server --------------------------------- */
 
+// Defines a transformer which will change an HTML page’s RUFFLIB_ENV from
+// 'public' to 'source', if the `--src` option was set.
+// Note that a new Transformer must be created for each request.
+const setEnvironmentToSource = () => new Transform({
+    transform: (chunk, _encoding, done) => {
+        const chunkStr = chunk.toString();
+        const needle = "<script>window.RUFFLIB_ENV='public'</script>";
+        done(
+            null,
+            chunkStr.includes(needle)
+                ? chunkStr.replace(needle, "<script>window.RUFFLIB_ENV='source'</script>")
+                : chunkStr
+        );
+    }
+});
+
 // Create the server.
-// Based on https://stackoverflow.com/a/40899767
 const server = http.createServer((req, res) => {
+
+    // Redirect '/' to the homepage.
     const url = req.url === '/' ? '/index.html' : req.url;
-    const readStream = fs.createReadStream(`${dir}${url}`);
+
+    // Set up the file-stream reader for this request.
+    // This usually points to a file in 'docs/' or 'src/docs/', but sometimes
+    // '<script type="importmap">' needs access to 'src/'.
+    const srcProxy = url.includes('__src__')
+        ? `src/${url.split('/').slice(url.indexOf('__src__')+1).join('/')}`
+        : false;
+    const readStream = fs.createReadStream(srcProxy || `${dir}${url}`);
+
+    // Serve the file.
+    // If the `--src` option was set, and this is an HTML file, change the
+    // page’s RUFFLIB_ENV from 'public' to 'source'.
     readStream.on('open', function () {
         res.setHeader('Content-Type', getMimetype(url));
-        readStream.pipe(res);
+        if (dir === 'src/docs' && url.slice(-5) === '.html')
+            readStream.pipe(setEnvironmentToSource()).pipe(res);
+        else
+            readStream.pipe(res);
     });
+
+    // Respond with a 404 error, probably because the file does not exist.
     readStream.on('error', function () {
         res.setHeader('Content-Type', 'text/plain');
         res.statusCode = 404;
         res.end('Not found');
     });
+
 });
 
 // Start the server.
@@ -63,7 +98,7 @@ if (doOpen) {
             : 'xdg-open'
     ;
     const filename = doTest
-        ? 'run-browser-tests.html'
+        ? 'test/run-browser-tests.html'
         : 'index.html'
     ;
     const fullUrl = `http://${hostname}:${port}/${filename}`;
