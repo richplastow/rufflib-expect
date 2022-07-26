@@ -15,7 +15,7 @@
   }
 
   /**
-   * Unit tests for rufflib-expect 3.0.1
+   * Unit tests for rufflib-expect 3.0.2
    * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
    * https://richplastow.com/rufflib-expect
    * @license MIT
@@ -673,7 +673,7 @@
 
 
   var NAME = 'Expect';
-  var VERSION = '3.0.1';
+  var VERSION = '3.0.2';
   /* ---------------------------------- Tests --------------------------------- */
   // Runs basic Expect tests on itself.
 
@@ -726,7 +726,7 @@
       status: 'pass'
     });
     that("expect.render()", expect.render()).passes(/^-{79}\nMathsy Test Suite\n={17}\nPassed 0 tests\n-{79}\n$/);
-  } // rufflib-expect/src/entry-point-for-tests.js
+  } // rufflib-expect/src/main-test.js
   // Run each test. You can comment-out some during development, to help focus on
   // individual tests. But make sure all tests are uncommented before committing.
 

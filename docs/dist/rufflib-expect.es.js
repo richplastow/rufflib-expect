@@ -1,5 +1,5 @@
 /**
- * rufflib-expect 3.0.1
+ * rufflib-expect 3.0.2
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -519,7 +519,7 @@ function section(
 /* --------------------------------- Import --------------------------------- */
 
 const NAME = 'Expect';
-const VERSION = '3.0.1';
+const VERSION = '3.0.2';
 
 
 /* ---------------------------------- Class --------------------------------- */
@@ -571,7 +571,5 @@ Expect.VERSION = VERSION;
 Expect.generateCss = generateCss;
 Expect.prototype.render = render;
 Expect.prototype.section = section;
-
-// rufflib-expect/src/entry-point-main.js
 
 export { Expect as default };

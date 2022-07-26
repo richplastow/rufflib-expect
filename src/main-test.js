@@ -1,4 +1,5 @@
-// rufflib-expect/src/entry-point-for-tests.js
+// rufflib-expect/src/main-test.js
+// (compare with rufflib-expect/main-test.js)
 
 // Entry point for running the unit tests in Expect’s source files.
 // Also used for building Expect’s unit test distribution files.

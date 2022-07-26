@@ -2,8 +2,8 @@
 
 /* ----------------------------- Imports and Env ---------------------------- */
 
-import Expect from './entry-point-main.js';
-import expectTest from './entry-point-for-tests.js';
+import Expect from './main.js';
+import expectTest from './main-test.js';
 
 // `npm test --full` means we should show full test results.
 const showFullResults = !! process.env.npm_config_full;

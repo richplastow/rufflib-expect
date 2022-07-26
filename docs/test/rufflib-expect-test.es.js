@@ -1,5 +1,5 @@
 /**
- * Unit tests for rufflib-expect 3.0.1
+ * Unit tests for rufflib-expect 3.0.2
  * A RuffLIB library for unit testing rough and sketchy JavaScript apps.
  * https://richplastow.com/rufflib-expect
  * @license MIT
@@ -843,7 +843,7 @@ function test$1(et, Expect) {
 /* --------------------------------- Import --------------------------------- */
 
 const NAME = 'Expect';
-const VERSION = '3.0.1';
+const VERSION = '3.0.2';
 
 
 /* ---------------------------------- Tests --------------------------------- */
@@ -903,7 +903,7 @@ function test(that, Expect) {
 
 }
 
-// rufflib-expect/src/entry-point-for-tests.js
+// rufflib-expect/src/main-test.js
 
 // Run each test. You can comment-out some during development, to help focus on
 // individual tests. But make sure all tests are uncommented before committing.
