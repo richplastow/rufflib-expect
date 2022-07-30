@@ -2,7 +2,7 @@
 
 __A RuffLIB library for unit testing rough and sketchy JavaScript apps.__
 
-▶&nbsp; __Version:__ 3.0.3  
+▶&nbsp; __Version:__ 3.0.4  
 ▶&nbsp; __Homepage:__ <https://richplastow.com/rufflib-expect>  
 ▶&nbsp; __NPM:__ <https://www.npmjs.com/package/rufflib-expect>  
 ▶&nbsp; __Repo:__ <https://github.com/richplastow/rufflib-expect>  
@@ -31,7 +31,7 @@ function factorialise(n) {
 
 ## Dev, Test and Build
 
-Run the test suite in ‘src/’, while working on this library:  
+Run the test suite in ‘src/docs/’, while working on this library:  
 `npm test --src`  
 `npm start --src --open --test`  
 
